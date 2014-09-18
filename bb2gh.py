@@ -1,112 +1,37 @@
 #!/usr/bin/env python
-import os
 
-"""
+# This file is part of the bitbucket to github migration script.
+#
+# The script is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# The script is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with the bitbucket issue migration script.
+# If not, see <http://www.gnu.org/licenses/>.
 
-"""
+from pygithub3 import Github
+from datetime import datetime, timedelta
+import urllib2
+import time
+import getpass
+import sys
 
-"""
-	Config variables
-"""
-
-# bitbucket login
-bb_user = "user"
-bb_pass = "pass"
-
-# github login
-gh_user = "me"
-gh_pass = "password"
-
-# project-name where to move the 
-projects_merge_root = "my_project"
-projects_merge_path = "./"
-
-# list of projects and merging options
-projects = [
-    {
-        "bb_name" : "project1",
-        "gh_name" : "company",
-        "merge"   : False,
-    },
-    {
-        "bb_name" : "project2",
-        "gh_name" : "project2",
-        "merge"   : True,
-    },
-    {
-        "bb_name" : "project3",
-        "gh_name" : "project3",
-        "merge"   : True,
-    }
-]
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 
-"""
-    # USERS/COMMITERS TO CONVERT IN GIT REPOSITORIES
-    {
-        "bb" : {
-            "name" : "",
-            "mail" : "",
-        },
-        "gh" : {
-            "name" : "",
-            "mail" : "",
-        },
-    },
-"""
-users = [
-    {
-        "bb" : {
-            "name" : "",
-            "mail" : "",
-        },
-        "gh" : {
-            "name" : "",
-            "mail" : "",
-        },
-    },
-    {
-        "bb" : {
-            "name" : "",
-            "mail" : "",
-        },
-        "gh" : {
-            "name" : "",
-            "mail" : "",
-        },
-    },
-    {
-        "bb" : {
-            "name" : "",
-            "mail" : "",
-        },
-        "gh" : {
-            "name" : "",
-            "mail" : "",
-        },
-    },
-    {
-        "bb" : {
-            "name" : "",
-            "mail" : "",
-        },
-        "gh" : {
-            "name" : "",
-            "mail" : "",
-        },
-    },
-    {
-        "bb" : {
-            "name" : "",
-            "mail" : "",
-        },
-        "gh" : {
-            "name" : "",
-            "mail" : "",
-        },
-    }
-}
-
+def load_config(filename):
+    json_data = open(filename)
+    return json.loads(json_data)
 
 def projects_fetch_repos():
     print "List bitbucket projects and ...\n"
