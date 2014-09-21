@@ -34,7 +34,7 @@ parser = OptionParser()
 parser.add_option("-t", "--dry-run", action="store_true", dest="dry_run", default=False,
     help="Perform a dry run and print eveything.")
 
-parser.add_option("-v", "--verbose", dest="verbose", default=False,
+parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=False,
     help="Show detailed output of issues entries processing.")
 
 parser.add_option("-u", "--username", dest="github_login",
