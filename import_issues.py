@@ -58,16 +58,16 @@ COLOR_REPOS = "dddddd"
 # see: https://developer.github.com/v3/
 from github import Github
 
-print 'Please enter your github password'
-github_password = getpass.getpass()
-github_login = options.github_login
+if not options.dry_run:
+    print 'Please enter your github password'
+    github_password = getpass.getpass()
+    github_login = options.github_login
+    g = Github(github_login, github_password)
 
-g = Github(github_login, github_password)
+    # load target repo
+    r = g.get_user().get_repo(options.repository)
+    print 'Opening GitHub repository: ' + r.name
 
-
-# load target repo
-r = g.get_user().get_repo(options.repository)
-print 'Opening GitHub repository: ' + r.name
 
 # load issues json file
 if options.verbose or options.dry_run:
