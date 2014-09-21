@@ -72,7 +72,8 @@ if not options.dry_run:
 # load issues json file
 if options.verbose or options.dry_run:
     print 'Loading issues from: ' + options.json_file
-json_str = open(options.json_file) # raw_input('Issues export file in JSON format (default: db-1.0.json)
+
+json_str = open(options.json_file).read() # raw_input('Issues export file in JSON format (default: db-1.0.json)
 issues = json.loads(json_str, object_pairs_hook=collections.OrderedDict)
 
 # default today's date for bitbucket data that doesn't have one (milestones...)
@@ -83,7 +84,7 @@ date = today.strftime("%Y-%m-%dT%H:%M:%SZ") # YYYY-MM-DDTHH:MM:SSZ
 # copy all milestones
 milestones = issues['milestones']
 if options.verbose or options.dry_run:
-    print 'Importing '+ len(milestones) +' milestone(s)...'
+    print 'Importing '+ `len(milestones)` +' milestone(s)...'
 
 for milestone in milestones:
     if options.verbose or options.dry_run:
@@ -103,7 +104,7 @@ if not options.dry_run:
 # copy versions as labels
 versions = issues['versions']
 if options.verbose or options.dry_run:
-    print 'Importing '+ len(versions) +' versions(s)...'
+    print 'Importing '+ `len(versions)` +' versions(s)...'
 
 for version in versions:
     if options.verbose or options.dry_run:
@@ -118,7 +119,7 @@ if options.verbose or options.dry_run:
 # attachemnts (ignored - not implemented yet)
 attachments = issues['attachments']
 if options.verbose or options.dry_run:
-    print 'Importing '+ len(attachments) +' attachments(s)...'
+    print 'Importing '+ `len(attachments)` +' attachments(s)...'
 
 print 'ERROR: NOT IMPLEMENTED YET... attachments ignored!'
 
@@ -128,5 +129,5 @@ if options.verbose or options.dry_run:
 
 # copy all issues
 comments = issues['comments']
-print 'Start importing '+ len(issues) +' issues(s)...'
+print 'Start importing '+ `len(issues)` +' issues(s)...'
 print 'Done importing issues.'
