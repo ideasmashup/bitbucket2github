@@ -73,8 +73,8 @@ if not options.dry_run:
 if options.verbose or options.dry_run:
     print 'Loading issues from: ' + options.json_file
 
-json_str = open(options.json_file).read() # raw_input('Issues export file in JSON format (default: db-1.0.json)
-issues = json.loads(json_str, object_pairs_hook=collections.OrderedDict)
+json_str = open(options.json_file).read()
+issues = json.loads(json_str)
 
 # default today's date for bitbucket data that doesn't have one (milestones...)
 today = datetime.date.today()
