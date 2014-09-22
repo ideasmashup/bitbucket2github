@@ -197,6 +197,7 @@ if options.verbose:
        "voters":[
     
        ],
+       "title":"Mission 2 : déplacement du robot",
        "reporter":"probeability",
        "component":null,
        "watchers":[
