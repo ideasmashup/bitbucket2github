@@ -55,7 +55,7 @@ DEFAULTS = {
 }
 
 COLOR_VERSION = "eeeeee"
-COLOR_REPOS = "dddddd"
+COLOR_REPOS   = "dddddd"
 
 
 # connect to GitHub API v3 
@@ -87,7 +87,7 @@ if options.verbose:
 
 
 if options.verbose:
-    print 'Setting default date to: ' + date
+    print 'Setting default date to: ' + DEFAULTS['date']
 
 # copy all milestones
 """
@@ -112,9 +112,9 @@ if options.verbose:
 
 for milestone in milestones:
     if options.verbose:
-        print '- creating new "' + milestone.name + '" milestone with no description and deadline set for today ('+ date +')'
+        print '- creating new "' + milestone['name'] + '" milestone with no description and deadline set to ('+ DEFAULTS['date'] +')'
     if not options.dry_run:
-        r.create_milestone(milestone.name, "open", "", date)
+        r.create_milestone(milestone['name'], "open", "", DEFAULTS['date'])
 
 print 'Done importing milestones.'
 
@@ -143,11 +143,11 @@ versions = data['versions']
 if options.verbose:
     print 'Importing '+ `len(versions)` +' versions(s)...'
 
-for version in versions:
+for version in versions.items():
     if options.verbose:
-        print '- creating new label "' + version.name + '"'
+        print '- creating new label "' + version['name'] + '"'
     if not options.dry_run:
-        r.create_label(version.name, COLOR_VERSION)
+        r.create_label(version['name'], COLOR_VERSION)
 
 if options.verbose:
     print 'Done importing versions.'
