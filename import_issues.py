@@ -75,6 +75,7 @@ if not options.dry_run:
 
 
 # load issues json file
+# -------------------------------------------------------------
 if options.verbose:
     print 'Loading issues from: ' + options.json_file
 
@@ -83,9 +84,12 @@ data = json.loads(json_str)
 
 if options.verbose:
     pprint(data)
+# -------------------------------------------------------------
 
 
 
+# fetch default values
+# -------------------------------------------------------------
 def import_metas(metas):
     if options.verbose:
         print 'Importing '+ `len(metas)` +' default value(s)...'
@@ -105,8 +109,12 @@ import_metas(metas)
 
 if options.verbose:
     print 'Setting default date to: ' + DEFAULTS['date']
+# -------------------------------------------------------------
+
+
 
 # copy all milestones
+# -------------------------------------------------------------
 """
 "milestones":[
    {
@@ -134,15 +142,22 @@ for milestone in milestones:
         r.create_milestone(milestone['name'], "open", "", DEFAULTS['date'])
 
 print 'Done importing milestones.'
+# -------------------------------------------------------------
+
 
 
 # create label for repository (for multi-repos merges?)
+# -------------------------------------------------------------
 if options.verbose:
     print '- creating new label "' + options.repository + '"'
 if not options.dry_run:
     r.create_label(options.repository, COLOR_REPOS)
+# -------------------------------------------------------------
+
+
 
 # copy versions as labels
+# -------------------------------------------------------------
 """
 "versions":[
   {
@@ -168,9 +183,12 @@ for version in versions.items():
 
 if options.verbose:
     print 'Done importing versions.'
+# -------------------------------------------------------------
+
 
 
 # attachemnts (ignored - not implemented yet)
+# -------------------------------------------------------------
 """
 "attachments":[
       // no sample data in our projects
@@ -184,9 +202,12 @@ print 'ERROR: NOT IMPLEMENTED YET... attachments ignored!'
 
 if options.verbose:
     print 'Done importing attachments.'
+# -------------------------------------------------------------
+
 
 
 # copy all issues
+# -------------------------------------------------------------
 """
 "issues":[
     {
@@ -232,3 +253,7 @@ for issue in issues.items():
         r.create_issue(issue['title'], issue_content(issue), issue['assignee'], milestone, labels)
 
 print 'Done importing issues.'
+# -------------------------------------------------------------
+
+
+
