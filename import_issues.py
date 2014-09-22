@@ -293,3 +293,39 @@ print 'Done importing comments.'
 # -------------------------------------------------------------
 
 
+# copy all logs
+# -------------------------------------------------------------
+"""
+"logs":[
+  {
+     "comment":9500004,
+     "changed_to":"Prototypage interne",
+     "field":"milestone",
+     "created_on":"2014-04-05T04:47:20.549697+00:00",
+     "user":"probeability",
+     "issue":20,
+     "changed_from":"Alpha"
+  },
+  {
+     "comment":11271837,
+     "changed_to":"resolved",
+     "field":"status",
+     "created_on":"2014-07-16T14:51:55.107022+00:00",
+     "user":"MahmoudLH",
+     "issue":25,
+     "changed_from":"new"
+  }
+],
+"""
+logs = data['logs']
+print 'Start importing '+ `len(logs)` +' log(s)...'
+
+
+for log in logs.items():
+    if options.verbose:
+        print '- creating new log "' + log['content'] + '"'
+#     if not options.dry_run:
+#         r.create_issue(title, comment['content'], assignee, milestone, labels)
+
+print 'Done importing logs.'
+# -------------------------------------------------------------
