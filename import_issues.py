@@ -257,3 +257,39 @@ print 'Done importing issues.'
 
 
 
+# copy all comments
+# -------------------------------------------------------------
+"""
+"comments":[
+  {
+     "content":"je suis entrain d'intégrer la fonction \"face-detection\" dans notre app",
+     "created_on":"2014-08-13T10:55:50.397164+00:00",
+     "user":"MahmoudLH",
+     "updated_on":null,
+     "issue":47,
+     "id":11762417
+  },
+  {
+     "content":null,
+     "created_on":"2014-08-13T10:51:49.410123+00:00",
+     "user":"MahmoudLH",
+     "updated_on":null,
+     "issue":46,
+     "id":11761742
+  },
+],
+"""
+comments = data['comments']
+print 'Start importing '+ `len(comments)` +' comment(s)...'
+
+
+for comment in comments.items():
+    if options.verbose:
+        print '- creating new comment "' + comment['content'] + '"'
+    if not options.dry_run:
+        r.create_comment(comment['content'])
+
+print 'Done importing comments.'
+# -------------------------------------------------------------
+
+
