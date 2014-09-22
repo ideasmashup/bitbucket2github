@@ -86,6 +86,23 @@ if options.verbose:
 
 
 
+def import_metas(metas):
+    if options.verbose:
+        print 'Importing '+ `len(metas)` +' default value(s)...'
+    
+    for key, value in metas.items():
+        if key is not None and value is not None: 
+            if options.verbose:
+                print '- default '+ key.decode('utf-8') +' = '+ value.decode('utf-8') 
+            if not options.dry_run:
+                DEFAULTS[key.decode('utf-8')] = value.decode('utf-8')
+    
+    print 'Done importing default values.'
+
+# defaults from meta fields
+metas = data['meta']
+import_metas(metas)
+
 if options.verbose:
     print 'Setting default date to: ' + DEFAULTS['date']
 
