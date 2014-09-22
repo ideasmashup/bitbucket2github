@@ -49,6 +49,11 @@ parser.add_option("-f", "--file", dest="json_file", default="db-1.0.json",
 (options, args) = parser.parse_args()
 
 # config values
+DEFAULTS = {
+    # default today's date for bitbucket data that doesn't have one (milestones...)
+    'date' : datetime.date.today().strftime("%Y-%m-%dT%H:%M:%SZ"), # YYYY-MM-DDTHH:MM:SSZ
+}
+
 COLOR_VERSION = "eeeeee"
 COLOR_REPOS = "dddddd"
 
@@ -80,9 +85,6 @@ if options.verbose:
     pprint(issues)
 
 
-# default today's date for bitbucket data that doesn't have one (milestones...)
-today = datetime.date.today()
-date = today.strftime("%Y-%m-%dT%H:%M:%SZ") # YYYY-MM-DDTHH:MM:SSZ
 
 if options.verbose:
     print 'Setting default date to: ' + date
