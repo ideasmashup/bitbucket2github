@@ -215,6 +215,11 @@ if options.verbose:
     },
 ],
 """
+def issue_content(issue):
+    content = "*original issue: *" # add all missing details after import here
+    content += issue['content']
+    return content
+
 issues = data['issues']
 print 'Start importing '+ `len(issues)` +' issues(s)...'
 print 'Done importing issues.'
