@@ -79,10 +79,10 @@ if options.verbose:
     print 'Loading issues from: ' + options.json_file
 
 json_str = open(options.json_file).read()
-issues = json.loads(json_str)
+data = json.loads(json_str)
 
 if options.verbose:
-    pprint(issues)
+    pprint(data)
 
 
 
@@ -90,7 +90,7 @@ if options.verbose:
     print 'Setting default date to: ' + date
 
 # copy all milestones
-milestones = issues['milestones']
+milestones = data['milestones']
 if options.verbose:
     print 'Importing '+ `len(milestones)` +' milestone(s)...'
 
@@ -110,7 +110,7 @@ if not options.dry_run:
     r.create_label(options.repository, COLOR_REPOS)
 
 # copy versions as labels
-versions = issues['versions']
+versions = data['versions']
 if options.verbose:
     print 'Importing '+ `len(versions)` +' versions(s)...'
 
@@ -125,7 +125,7 @@ if options.verbose:
 
 
 # attachemnts (ignored - not implemented yet)
-attachments = issues['attachments']
+attachments = data['attachments']
 if options.verbose:
     print 'Importing '+ `len(attachments)` +' attachments(s)...'
 
@@ -136,6 +136,6 @@ if options.verbose:
 
 
 # copy all issues
-comments = issues['comments']
+issues = data['issues']
 print 'Start importing '+ `len(issues)` +' issues(s)...'
 print 'Done importing issues.'
