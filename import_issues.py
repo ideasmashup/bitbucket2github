@@ -159,19 +159,19 @@ if not options.dry_run:
 
 # copy versions as labels
 # -------------------------------------------------------------
-"""
-"versions":[
-  {
-     "name":"Interne 0"
-  },
-  {
-     "name":"Interne 1"
-  },
-  {
-     "name":"Interne 2"
-  },
-],
-"""
+#
+# "versions":[
+#   {
+#      "name":"Interne 0"
+#   },
+#   {
+#      "name":"Interne 1"
+#   },
+#   {
+#      "name":"Interne 2"
+#   },
+# ],
+
 versions = data['versions']
 if options.verbose:
     print 'Importing '+ `len(versions)` +' versions(s)...'
@@ -230,11 +230,11 @@ if options.verbose:
 
 # attachemnts (ignored - not implemented yet)
 # -------------------------------------------------------------
-"""
-"attachments":[
-      // no sample data in our projects
-],
-"""
+# 
+# "attachments":[
+#       // no sample data in our projects
+# ],
+
 attachments = data['attachments']
 if options.verbose:
     print 'Importing '+ `len(attachments)` +' attachments(s)...'
@@ -249,34 +249,34 @@ if options.verbose:
 
 # copy all issues
 # -------------------------------------------------------------
-"""
-"issues":[
-    {
-       "status":"new",
-       "priority":"major",
-       "kind":"task",
-       "content_updated_on":null,
-       "voters":[
-    
-       ],
-       "title":"Mission 2 : déplacement du robot",
-       "reporter":"probeability",
-       "component":null,
-       "watchers":[
-          "MahmoudLH",
-          "probeability"
-       ],
-       "content":"# Objectifs de la mission\r\n\r\n1. le robot peut se déplacer dans toutes les directions\r\n2. le robot peut détecter et contourner des obstacles\r\n3. le robot peut se repérer dans l'espace (ou au minimum suivre un trajet prédéfini - sans marquage au sol)\r\n\r\n*Actuellement on peut commander certains déplacements du robot, il n'est pas autonome car il n'utilise pas la sonde ultrason, il est aveugle et aussi les moteurs sont \"brushless\" donc très imprécis*\r\n\r\n# Améliorations\r\n\r\n- utiliser le sonar pour détecter des obstacles qui ne sont pas au niveau du sol\r\n    - identifier si c'est un obstacle immobile ou autre (une personne qui bouge)\r\n    - attendre et reprendre le déplacement initial ou changer de route pour le contourner\r\n- utiliser le gyroscope android pour obtenir des informations directionnelles (compas, orientation, etc)\r\n- permettre d'enregistrer des déplacements prédéfinis et de les reproduire en boucle\r\n    - par exemple en enregistrant les appuis sur les boutons flèches du smartphone dans un fichier (par exemple faire bouger le robot dans le bureau de Zarzis et revenir à son point de départ)\r\n    - ensuite permettre de charger les déplacements depuis le fichier pour que le robot recommence tout seul\r\n    - le fichier doit être éditable avec un éditeur texte pour faciliter le debug\r\n- quand Marouane aura remplacé les moteur \"brushless\" par des \"pas-à-pas continus\" (plus précis)\r\n    - améliorer la précision des déplacements (ie. rotation des roues précise en radians, nb de tours, durée, vitesse, etc)\r\n    - rendre les déplacements plus \"doux\" (easing)\r\n\r\n# A faire\r\n\r\n- reprendre le code de Mahmoud, discuter avec lui + Marouane pour avoir un état des lieux\r\n- estimer ce qui peut avancer sur cette mission d'ici le 30 septembre",
-       "assignee":"MahmoudLH",
-       "created_on":"2014-09-01T03:56:21.849373+00:00",
-       "version":"Interne 3",
-       "edited_on":null,
-       "milestone":"Prototypage interne",
-       "updated_on":"2014-09-01T03:56:21.849373+00:00",
-       "id":50
-    },
-],
-"""
+# 
+# "issues":[
+#     {
+#        "status":"new",
+#        "priority":"major",
+#        "kind":"task",
+#        "content_updated_on":null,
+#        "voters":[
+#     
+#        ],
+#        "title":"Mission 2 : deplacement du robot",
+#        "reporter":"probeability",
+#        "component":null,
+#        "watchers":[
+#           "MahmoudLH",
+#           "probeability"
+#        ],
+#        "content":"# Objectifs de la mission\r\n\r\n1. le robot peut se deplacer dans toutes les directions\r\n2. le robot peut detecter et contourner des obstacles\r\n3. le robot peut se reperer dans l'espace (ou au minimum suivre un trajet predefini - sans marquage au sol)\r\n\r\n*Actuellement on peut commander certains deplacements du robot, il n'est pas autonome car il n'utilise pas la sonde ultrason, il est aveugle et aussi les moteurs sont \"brushless\" donc tres imprecis*\r\n\r\n# Ameliorations\r\n\r\n- utiliser le sonar pour detecter des obstacles qui ne sont pas au niveau du sol\r\n    - identifier si c'est un obstacle immobile ou autre (une personne qui bouge)\r\n    - attendre et reprendre le deplacement initial ou changer de route pour le contourner\r\n- utiliser le gyroscope android pour obtenir des informations directionnelles (compas, orientation, etc)\r\n- permettre d'enregistrer des deplacements predefinis et de les reproduire en boucle\r\n    - par exemple en enregistrant les appuis sur les boutons fleches du smartphone dans un fichier (par exemple faire bouger le robot dans le bureau de Zarzis et revenir a son point de depart)\r\n    - ensuite permettre de charger les deplacements depuis le fichier pour que le robot recommence tout seul\r\n    - le fichier doit etre editable avec un editeur texte pour faciliter le debug\r\n- quand Marouane aura remplace les moteur \"brushless\" par des \"pas-a-pas continus\" (plus precis)\r\n    - ameliorer la precision des deplacements (ie. rotation des roues precise en radians, nb de tours, duree, vitesse, etc)\r\n    - rendre les deplacements plus \"doux\" (easing)\r\n\r\n# A faire\r\n\r\n- reprendre le code de Mahmoud, discuter avec lui + Marouane pour avoir un etat des lieux\r\n- estimer ce qui peut avancer sur cette mission d'ici le 30 septembre",
+#        "assignee":"MahmoudLH",
+#        "created_on":"2014-09-01T03:56:21.849373+00:00",
+#        "version":"Interne 3",
+#        "edited_on":null,
+#        "milestone":"Prototypage interne",
+#        "updated_on":"2014-09-01T03:56:21.849373+00:00",
+#        "id":50
+#     },
+# ],
+
 def issue_content(issue):
     content = "*original issue: *" # add all missing details after import here
     content += issue['content']
@@ -300,26 +300,26 @@ print 'Done importing issues.'
 
 # copy all comments
 # -------------------------------------------------------------
-"""
-"comments":[
-  {
-     "content":"je suis entrain d'intégrer la fonction \"face-detection\" dans notre app",
-     "created_on":"2014-08-13T10:55:50.397164+00:00",
-     "user":"MahmoudLH",
-     "updated_on":null,
-     "issue":47,
-     "id":11762417
-  },
-  {
-     "content":null,
-     "created_on":"2014-08-13T10:51:49.410123+00:00",
-     "user":"MahmoudLH",
-     "updated_on":null,
-     "issue":46,
-     "id":11761742
-  },
-],
-"""
+# 
+# "comments":[
+#   {
+#      "content":"je suis entrain d'integrer la fonction \"face-detection\" dans notre app",
+#      "created_on":"2014-08-13T10:55:50.397164+00:00",
+#      "user":"MahmoudLH",
+#      "updated_on":null,
+#      "issue":47,
+#      "id":11762417
+#   },
+#   {
+#      "content":null,
+#      "created_on":"2014-08-13T10:51:49.410123+00:00",
+#      "user":"MahmoudLH",
+#      "updated_on":null,
+#      "issue":46,
+#      "id":11761742
+#   },
+# ],
+
 comments = data['comments']
 print 'Start importing '+ `len(comments)` +' comment(s)...'
 
@@ -336,28 +336,28 @@ print 'Done importing comments.'
 
 # copy all logs
 # -------------------------------------------------------------
-"""
-"logs":[
-  {
-     "comment":9500004,
-     "changed_to":"Prototypage interne",
-     "field":"milestone",
-     "created_on":"2014-04-05T04:47:20.549697+00:00",
-     "user":"probeability",
-     "issue":20,
-     "changed_from":"Alpha"
-  },
-  {
-     "comment":11271837,
-     "changed_to":"resolved",
-     "field":"status",
-     "created_on":"2014-07-16T14:51:55.107022+00:00",
-     "user":"MahmoudLH",
-     "issue":25,
-     "changed_from":"new"
-  }
-],
-"""
+# 
+# "logs":[
+#   {
+#      "comment":9500004,
+#      "changed_to":"Prototypage interne",
+#      "field":"milestone",
+#      "created_on":"2014-04-05T04:47:20.549697+00:00",
+#      "user":"probeability",
+#      "issue":20,
+#      "changed_from":"Alpha"
+#   },
+#   {
+#      "comment":11271837,
+#      "changed_to":"resolved",
+#      "field":"status",
+#      "created_on":"2014-07-16T14:51:55.107022+00:00",
+#      "user":"MahmoudLH",
+#      "issue":25,
+#      "changed_from":"new"
+#   }
+# ],
+
 logs = data['logs']
 print 'Start importing '+ `len(logs)` +' log(s)...'
 
