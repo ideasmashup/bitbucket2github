@@ -176,7 +176,7 @@ versions = data['versions']
 if options.verbose:
     print 'Importing '+ `len(versions)` +' versions(s)...'
 
-for version in versions.items():
+for version in versions:
     if options.verbose:
         print '- creating new label "' + version['name'] + '"'
     if not options.dry_run:
@@ -286,7 +286,7 @@ issues = data['issues']
 print 'Start importing '+ `len(issues)` +' issues(s)...'
 
 
-for issue in issues.items():
+for issue in issues:
     if options.verbose:
         print '- creating new issue "' + issue['content'] + '"'
     if not options.dry_run:
@@ -324,7 +324,7 @@ comments = data['comments']
 print 'Start importing '+ `len(comments)` +' comment(s)...'
 
 
-for comment in comments.items():
+for comment in comments:
     if options.verbose:
         print '- creating new comment "' + comment['content'] + '"'
     if not options.dry_run:
@@ -362,7 +362,7 @@ logs = data['logs']
 print 'Start importing '+ `len(logs)` +' log(s)...'
 
 
-for log in logs.items():
+for log in logs:
     if options.verbose:
         print '- creating new log "' + log['content'] + '"'
 #     if not options.dry_run:
