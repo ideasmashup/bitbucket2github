@@ -54,6 +54,7 @@ DEFAULTS = {
     'date' : datetime.date.today().strftime("%Y-%m-%dT%H:%M:%SZ"), # YYYY-MM-DDTHH:MM:SSZ
 }
 
+COLOR_COMPONENT = "339999"
 COLOR_VERSION = "eeeeee"
 COLOR_REPOS   = "dddddd"
 
@@ -183,6 +184,46 @@ for version in versions.items():
 
 if options.verbose:
     print 'Done importing versions.'
+# -------------------------------------------------------------
+
+
+
+# copy components as labels
+# -------------------------------------------------------------
+#
+# "components":[
+#    {
+#       "name":"Configuration"
+#    },
+#    {
+#       "name":"Effets spéciaux"
+#    },
+#    {
+#       "name":"Fonctions vocales"
+#    },
+#    {
+#        "name":"Intelligence"
+#    },
+#    {
+#       "name":"Interface utilisateur"
+#    },
+#    {
+#       "name":"Internet"
+#    },
+# ],
+
+components = data['components']
+if options.verbose:
+    print 'Importing '+ `len(components)` +' component(s)...'
+
+for component in components:
+    if options.verbose:
+        print '- creating new label "' + component['name'] + '"'
+    if not options.dry_run:
+        r.create_label(component['name'], COLOR_COMPONENT)
+
+if options.verbose:
+    print 'Done importing components.'
 # -------------------------------------------------------------
 
 
