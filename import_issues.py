@@ -58,6 +58,8 @@ COLOR_COMPONENT = "339999"
 COLOR_VERSION = "eeeeee"
 COLOR_REPOS   = "dddddd"
 
+count = 0;
+
 
 # connect to GitHub API v3 
 # see: https://github.com/jacquev6/PyGithub
@@ -95,8 +97,11 @@ def import_metas(metas):
     if options.verbose:
         print 'Importing '+ `len(metas)` +' default value(s)...'
     
+    count = 0
     for key, value in metas.items():
-        if key is not None and value is not None: 
+        if key is not None and value is not None:
+            count += 1
+            print '- importing #'+ `count` 
             if options.verbose:
                 print '- default '+ key.decode('utf-8') +' = '+ value.decode('utf-8') 
             if not options.dry_run:
@@ -136,7 +141,10 @@ milestones = data['milestones']
 if options.verbose:
     print 'Importing '+ `len(milestones)` +' milestone(s)...'
 
+count = 0;
 for milestone in milestones:
+    count += 1
+    print '- importing #'+ `count`
     if options.verbose:
         print '- creating new "' + milestone['name'] + '" milestone with no description and deadline set to ('+ DEFAULTS['date'] +')'
     if not options.dry_run:
@@ -176,7 +184,10 @@ versions = data['versions']
 if options.verbose:
     print 'Importing '+ `len(versions)` +' versions(s)...'
 
+count = 0
 for version in versions:
+    count += 1
+    print '- importing #'+ `count`
     if options.verbose:
         print '- creating new label "' + version['name'] + '"'
     if not options.dry_run:
@@ -216,7 +227,10 @@ components = data['components']
 if options.verbose:
     print 'Importing '+ `len(components)` +' component(s)...'
 
+count = 0
 for component in components:
+    count += 1
+    print '- importing #'+ `count`
     if options.verbose:
         print '- creating new label "' + component['name'] + '"'
     if not options.dry_run:
@@ -285,8 +299,10 @@ def issue_content(issue):
 issues = data['issues']
 print 'Start importing '+ `len(issues)` +' issues(s)...'
 
-
+count = 0
 for issue in issues:
+    count += 1
+    print '- importing #'+ `count`
     if options.verbose:
         print '- creating new issue "' + issue['content'] + '"'
     if not options.dry_run:
@@ -323,8 +339,10 @@ print 'Done importing issues.'
 comments = data['comments']
 print 'Start importing '+ `len(comments)` +' comment(s)...'
 
-
+count = 0
 for comment in comments:
+    count += 1
+    print '- importing #'+ `count`
     if options.verbose:
         print '- creating new comment "' + comment['content'] + '"'
     if not options.dry_run:
