@@ -18,6 +18,10 @@ $ sudo apt-get install python-pip
 
 ## Tools
 
+### Source
+
+(complete this section)
+
 ### Issues
 
 ```import_issues.py``` can import all issues from a bitbucket issues export file
@@ -41,4 +45,14 @@ Options:
 $ import_issues.py -u username -r repository -f db-1.0.json
 ```
 
+### Wiki
 
+(complete this section)
+
+### Downloads
+
+(not supported yet...) 
+
+### Users
+
+(complete this section)
