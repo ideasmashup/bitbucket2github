@@ -196,7 +196,7 @@ if options.verbose:
 #       "name":"Configuration"
 #    },
 #    {
-#       "name":"Effets spéciaux"
+#       "name":"Effets speciaux"
 #    },
 #    {
 #       "name":"Fonctions vocales"
