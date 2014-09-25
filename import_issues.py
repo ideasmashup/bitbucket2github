@@ -56,14 +56,13 @@ DEFAULTS = {
     
 }
 
-
-count = 0;
 COLOR_COMPONENT = "ff9900"
 COLOR_VERSION = "ffcc00"
 COLOR_REPOS   = "ccff00"
 
-github_data = None
-bitbucket_data = None
+count = 0
+github_data = {}
+bitbucket_data = {}
 
 # connect to GitHub API v3 
 # see: https://github.com/jacquev6/PyGithub
