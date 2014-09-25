@@ -61,6 +61,8 @@ COLOR_REPOS   = "dddddd"
 
 count = 0;
 
+github_data = None
+bitbucket_data = None
 
 # connect to GitHub API v3 
 # see: https://github.com/jacquev6/PyGithub
@@ -84,10 +86,10 @@ if options.verbose:
     print 'Loading issues from: ' + options.json_file
 
 json_str = open(options.json_file).read()
-data = json.loads(json_str)
+bitbucket_data = json.loads(json_str)
 
 if options.verbose:
-    pprint(data)
+    pprint(bitbucket_data)
 # -------------------------------------------------------------
 
 
@@ -111,7 +113,7 @@ def import_metas(metas):
     print 'Done importing default values.'
 
 # defaults from meta fields
-metas = data['meta']
+metas = bitbucket_data['meta']
 import_metas(metas)
 
 if options.verbose:
@@ -181,7 +183,7 @@ if not options.dry_run:
 #   },
 # ],
 
-versions = data['versions']
+versions = bitbucket_data['versions']
 if options.verbose:
     print 'Importing '+ `len(versions)` +' versions(s)...'
 
@@ -224,7 +226,7 @@ if options.verbose:
 #    },
 # ],
 
-components = data['components']
+components = bitbucket_data['components']
 if options.verbose:
     print 'Importing '+ `len(components)` +' component(s)...'
 
@@ -250,7 +252,7 @@ if options.verbose:
 #       // no sample data in our projects
 # ],
 
-attachments = data['attachments']
+attachments = bitbucket_data['attachments']
 if options.verbose:
     print 'Importing '+ `len(attachments)` +' attachments(s)...'
 
@@ -297,7 +299,7 @@ def issue_content(issue):
     content += issue['content']
     return content
 
-issues = data['issues']
+issues = bitbucket_data['issues']
 print 'Start importing '+ `len(issues)` +' issues(s)...'
 
 count = 0
@@ -337,7 +339,7 @@ print 'Done importing issues.'
 #   },
 # ],
 
-comments = data['comments']
+comments = bitbucket_data['comments']
 print 'Start importing '+ `len(comments)` +' comment(s)...'
 
 count = 0
@@ -377,7 +379,7 @@ print 'Done importing comments.'
 #   }
 # ],
 
-logs = data['logs']
+logs = bitbucket_data['logs']
 print 'Start importing '+ `len(logs)` +' log(s)...'
 
 
