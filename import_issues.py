@@ -144,16 +144,29 @@ milestones = data['milestones']
 if options.verbose:
     print 'Importing '+ `len(milestones)` +' milestone(s)...'
 
-count = 0;
-for milestone in milestones:
-    count += 1
-    print '- importing #'+ `count`
+def import_milestones(milestones):
+    github_milestones = {}
+    
     if options.verbose:
-        print '- creating new "' + milestone['name'] + '" milestone with no description and deadline set to ('+ DEFAULTS['date'] +')'
-    if not options.dry_run:
-        r.create_milestone(milestone['name'], "open", "", DEFAULTS['date'])
+        print 'Importing '+ `len(milestones)` +' milestone(s)...'
 
-print 'Done importing milestones.'
+    count = 0;
+    for milestone in milestones:
+        count += 1
+        print '- importing #'+ `count`
+        if options.verbose:
+            print '- creating new "' + milestone['name'] + '" milestone with no description and deadline set to ('+ DEFAULTS['date'].strftime("%Y-%m-%dT%H:%M:%SZ") +')'
+        if not options.dry_run:
+            try: 
+                github_milestones[milestone['name']] = r.create_milestone(milestone['name'], "open", "", datetime.date.today())
+            except Exception:
+                # ignore exceptions and attempt to import next entry
+                sys.exc_clear()
+
+    print 'Done importing milestones.'
+    return github_milestones
+
+github_data['milestones'] = import_milestones(bitbucket_data['milestones'])
 # -------------------------------------------------------------
 
 
