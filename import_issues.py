@@ -55,11 +55,11 @@ DEFAULTS = {
     
 }
 
-COLOR_COMPONENT = "339999"
-COLOR_VERSION = "eeeeee"
-COLOR_REPOS   = "dddddd"
 
 count = 0;
+COLOR_COMPONENT = "ff9900"
+COLOR_VERSION = "ffcc00"
+COLOR_REPOS   = "ccff00"
 
 github_data = None
 bitbucket_data = None
