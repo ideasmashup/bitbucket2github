@@ -51,7 +51,8 @@ parser.add_option("-f", "--file", dest="json_file", default="db-1.0.json",
 # config values
 DEFAULTS = {
     # default today's date for bitbucket data that doesn't have one (milestones...)
-    'date' : datetime.date.today().strftime("%Y-%m-%dT%H:%M:%SZ"), # YYYY-MM-DDTHH:MM:SSZ
+    'date' : datetime.date.today()
+    
 }
 
 COLOR_COMPONENT = "339999"
@@ -114,7 +115,7 @@ metas = data['meta']
 import_metas(metas)
 
 if options.verbose:
-    print 'Setting default date to: ' + DEFAULTS['date']
+    print 'Setting default date to: ' + DEFAULTS['date'].strftime("%Y-%m-%dT%H:%M:%SZ")
 # -------------------------------------------------------------
 
 
