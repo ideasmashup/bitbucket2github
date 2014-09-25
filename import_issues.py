@@ -97,6 +97,15 @@ if options.verbose:
 
 # fetch default values
 # -------------------------------------------------------------
+#
+# "meta":{
+#    "default_milestone":null,
+#    "default_assignee":null,
+#    "default_kind":"bug",
+#    "default_component":null,
+#    "default_version":null
+# },
+
 def import_metas(metas):
     if options.verbose:
         print 'Importing '+ `len(metas)` +' default value(s)...'
@@ -123,27 +132,23 @@ if options.verbose:
 
 
 
-# copy all milestones
+# import all milestones
 # -------------------------------------------------------------
-"""
-"milestones":[
-   {
-      "name":"September sprint"
-   },
-   {
-      "name":"October sprint"
-   },
-   {
-      "name":"Preview release"
-   },
-   {
-      "name":"Bugsmashing marathon"
-   }
-],
-"""
-milestones = data['milestones']
-if options.verbose:
-    print 'Importing '+ `len(milestones)` +' milestone(s)...'
+# 
+# "milestones":[
+#    {
+#       "name":"September sprint"
+#    },
+#    {
+#       "name":"October sprint"
+#    },
+#    {
+#       "name":"Preview release"
+#    },
+#    {
+#       "name":"Bugsmashing marathon"
+#    }
+# ],
 
 def import_milestones(milestones):
     github_milestones = {}
@@ -263,7 +268,7 @@ if options.verbose:
 # -------------------------------------------------------------
 # 
 # "attachments":[
-#       // no sample data in our projects
+#       // no sample bitbucket_data in our projects
 # ],
 
 attachments = bitbucket_data['attachments']
