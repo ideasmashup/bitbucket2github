@@ -324,7 +324,7 @@ for issue in issues:
         print '- creating new issue "' + issue['content'] + '"'
     if not options.dry_run:
         labels = []
-        r.create_issue(issue['title'], issue_content(issue), issue['assignee'], milestone, labels)
+        r.create_issue(issue['title'], issue_content(issue), issue['assignee'], github_data['milestones'][issue['milestone']], labels)
 
 print 'Done importing issues.'
 # -------------------------------------------------------------
