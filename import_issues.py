@@ -107,9 +107,11 @@ if options.verbose:
 # },
 
 def import_metas(metas):
+    output = {}
+
     if options.verbose:
         print 'Importing '+ `len(metas)` +' default value(s)...'
-    
+
     count = 0
     for key, value in metas.items():
         if key is not None and value is not None:
@@ -118,13 +120,13 @@ def import_metas(metas):
             if options.verbose:
                 print '- default '+ key.decode('utf-8') +' = '+ value.decode('utf-8') 
             if not options.dry_run:
-                DEFAULTS[key.decode('utf-8')] = value.decode('utf-8')
-    
+                output[key.decode('utf-8')] = value.decode('utf-8')
+
     print 'Done importing default values.'
+    return output
 
 # defaults from meta fields
-metas = bitbucket_data['meta']
-import_metas(metas)
+github_data['metas'] = import_metas(bitbucket_data['meta'])
 
 if options.verbose:
     print 'Setting default date to: ' + DEFAULTS['date'].strftime("%Y-%m-%dT%H:%M:%SZ")
