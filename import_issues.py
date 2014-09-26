@@ -178,13 +178,23 @@ github_data['milestones'] = import_milestones(bitbucket_data['milestones'])
 
 
 
+# -------------------------------------------------------------
+github_data['labels'] = {}
+def add_label(label):
+    github_data['labels'][label.name] = label
+
+def create_label(repo, color):
+    if options.verbose:
+        print '- creating new label "' + repo + '"'
+    if not options.dry_run:
+        label = r.create_label(repo, COLOR_REPOS)
+        add_label(label)
+
+    return label
+# -------------------------------------------------------------
+
 # create label for repository (for multi-repos merges?)
-# -------------------------------------------------------------
-if options.verbose:
-    print '- creating new label "' + options.repository + '"'
-if not options.dry_run:
-    r.create_label(options.repository, COLOR_REPOS)
-# -------------------------------------------------------------
+create_label(options.repository, COLOR_REPOS)
 
 
 
