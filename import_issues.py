@@ -213,21 +213,26 @@ create_label(options.repository, COLOR_REPOS)
 #   },
 # ],
 
-versions = bitbucket_data['versions']
-if options.verbose:
-    print 'Importing '+ `len(versions)` +' versions(s)...'
+def import_versions(versions):
+    labels = []
 
-count = 0
-for version in versions:
-    count += 1
-    print '- importing #'+ `count`
     if options.verbose:
-        print '- creating new label "' + version['name'] + '"'
-    if not options.dry_run:
-        r.create_label(version['name'], COLOR_VERSION)
+        print 'Importing '+ `len(versions)` +' versions(s)...'
 
-if options.verbose:
-    print 'Done importing versions.'
+    count = 0
+    for version in versions:
+        count += 1
+        print '- importing #'+ `count`
+        if not options.dry_run:
+            label = create_label(version['name'], COLOR_VERSION)
+            labels.append(label)
+    
+    if options.verbose:
+        print 'Done importing versions.'
+
+    return labels
+
+import_versions(bitbucket_data['versions'])
 # -------------------------------------------------------------
 
 
@@ -255,22 +260,28 @@ if options.verbose:
 #       "name":"Internet"
 #    },
 # ],
+def import_components(components):
+    labels = []
 
-components = bitbucket_data['components']
-if options.verbose:
-    print 'Importing '+ `len(components)` +' component(s)...'
-
-count = 0
-for component in components:
-    count += 1
-    print '- importing #'+ `count`
     if options.verbose:
-        print '- creating new label "' + component['name'] + '"'
-    if not options.dry_run:
-        r.create_label(component['name'], COLOR_COMPONENT)
+        print 'Importing '+ `len(components)` +' component(s)...'
 
-if options.verbose:
-    print 'Done importing components.'
+    count = 0
+    for component in components:
+        count += 1
+        print '- importing #'+ `count`
+        if options.verbose:
+            print '- creating new label "' + component['name'] + '"'
+        if not options.dry_run:
+            label = create_label(component['name'], COLOR_COMPONENT)
+            labels.append(label)
+
+    if options.verbose:
+        print 'Done importing components.'
+
+    return labels
+
+import_components(bitbucket_data['components'])
 # -------------------------------------------------------------
 
 
