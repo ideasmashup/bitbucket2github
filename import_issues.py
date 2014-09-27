@@ -397,20 +397,33 @@ github_data['issues'] = import_issues(bitbucket_data['issues'])
 #      "id":11761742
 #   },
 # ],
+def comment_content(comment):
+    # TODO use template to format data
+    content = comment['content']
+    return content
 
-comments = bitbucket_data['comments']
-print 'Start importing '+ `len(comments)` +' comment(s)...'
+def import_comments(comments):
+    output = []
 
-count = 0
-for comment in comments:
-    count += 1
-    print '- importing #'+ `count`
-    if options.verbose:
-        print '- creating new comment "' + comment['content'] + '"'
-    if not options.dry_run:
-        r.create_comment(comment['content'])
+    print 'Start importing '+ `len(comments)` +' comment(s)...'
 
-print 'Done importing comments.'
+    count = 0
+    for comment in comments:
+        count += 1
+        print '- importing #'+ `count`
+        if options.verbose:
+            print '- creating new comment "' + comment['content'] + '"'
+        if not options.dry_run:
+            content = comment_content(comment)
+            out = r.create_comment(content)
+            output.append(out)
+
+    print 'Done importing comments.'
+
+    return output
+
+
+github_data['comments'] = import_comments(bitbucket_data['comments'])
 # -------------------------------------------------------------
 
 
