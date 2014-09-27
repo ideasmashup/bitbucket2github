@@ -169,7 +169,15 @@ def import_milestones(milestones):
     print 'Done importing milestones.'
     return github_milestones
 
+
 github_data['milestones'] = import_milestones(bitbucket_data['milestones'])
+
+if options.verbose:
+    print 'Imported milestones :'
+    for x in github_data['milestones']:
+        print (x)
+        for y in github_data['milestones'][x]:
+            print (y,':',github_data['milestones'][x][y])
 # -------------------------------------------------------------
 
 
