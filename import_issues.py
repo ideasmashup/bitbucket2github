@@ -188,8 +188,12 @@ def create_label(repo, color):
     if options.verbose:
         print '- creating new label "' + repo + '"'
     if not options.dry_run:
-        label = r.create_label(repo, COLOR_REPOS)
-        add_label(label)
+        try: 
+            label = r.create_label(repo, COLOR_REPOS)
+            add_label(label)
+        except Exception:
+            # ignore exceptions and attempt to import next entry
+            sys.exc_clear()
 
     return label
 # -------------------------------------------------------------
@@ -362,7 +366,7 @@ def import_issues(issues):
             content = issue_content(issue)
             assignee = issue['assignee']
             milestone = github_data['milestones'][issue['milestone']]
-            label = github_data['labels'][issue['label']]
+            label = issue['label']
             issue = r.create_issue(title, content, assignee, milestone, label)
             output['id'] = issue
 
