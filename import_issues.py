@@ -164,11 +164,7 @@ def import_milestones(milestones):
         if options.verbose:
             print '- creating new "' + milestone['name'] + '" milestone with no description and deadline set to ('+ DEFAULTS['date'].strftime("%Y-%m-%dT%H:%M:%SZ") +')'
         if not options.dry_run:
-            try: 
-                github_milestones[milestone['name']] = r.create_milestone(milestone['name'], "open", "", datetime.date.today())
-            except Exception:
-                # ignore exceptions and attempt to import next entry
-                sys.exc_clear()
+            github_milestones[milestone['name']] = r.create_milestone(milestone['name'], "open", "", datetime.date.today())
 
     print 'Done importing milestones.'
     return github_milestones
@@ -188,12 +184,8 @@ def create_label(repo, color):
     if options.verbose:
         print '- creating new label "' + repo + '"'
     if not options.dry_run:
-        try: 
-            label = r.create_label(repo, COLOR_REPOS)
-            add_label(label)
-        except Exception:
-            # ignore exceptions and attempt to import next entry
-            sys.exc_clear()
+        label = r.create_label(repo, COLOR_REPOS)
+        add_label(label)
 
     return label
 # -------------------------------------------------------------
