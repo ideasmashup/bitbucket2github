@@ -346,20 +346,31 @@ def issue_content(issue):
     content += issue['content']
     return content
 
-issues = bitbucket_data['issues']
-print 'Start importing '+ `len(issues)` +' issues(s)...'
+def import_issues(issues):
+    output = {}
+    print 'Start importing '+ `len(issues)` +' issues(s)...'
 
-count = 0
-for issue in issues:
-    count += 1
-    print '- importing #'+ `count`
-    if options.verbose:
-        print '- creating new issue "' + issue['content'] + '"'
-    if not options.dry_run:
-        labels = []
-        r.create_issue(issue['title'], issue_content(issue), issue['assignee'], github_data['milestones'][issue['milestone']], labels)
+    count = 0
+    for issue in issues:
+        count += 1
+        print '- importing #'+ `count`
+        if options.verbose:
+            print '- creating new issue "' + issue['title'] + '"'
+        if not options.dry_run:
+            title = issue['title']
+            content = issue_content(issue)
+            assignee = issue['assignee']
+            milestone = github_data['milestones'][issue['milestone']]
+            label = github_data['labels'][issue['label']]
+            issue = r.create_issue(title, content, assignee, milestone, label)
+            output['id'] = issue
 
-print 'Done importing issues.'
+    print 'Done importing issues.'
+
+    return output
+
+
+github_data['issues'] = import_issues(bitbucket_data['issues'])
 # -------------------------------------------------------------
 
 
