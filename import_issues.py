@@ -292,15 +292,21 @@ import_components(bitbucket_data['components'])
 # "attachments":[
 #       // no sample bitbucket_data in our projects
 # ],
+def import_attachments(attachments):
+    attachs = []
 
-attachments = bitbucket_data['attachments']
-if options.verbose:
-    print 'Importing '+ `len(attachments)` +' attachments(s)...'
+    if options.verbose:
+        print 'Importing '+ `len(attachments)` +' attachments(s)...'
 
-print 'ERROR: NOT IMPLEMENTED YET... attachments ignored!'
+    print 'ERROR: NOT IMPLEMENTED YET... attachments ignored!'
 
-if options.verbose:
-    print 'Done importing attachments.'
+    if options.verbose:
+        print 'Done importing attachments.'
+
+    return attachs
+
+
+github_data['attachments'] = import_attachments(bitbucket_data['attachments'])
 # -------------------------------------------------------------
 
 
