@@ -184,6 +184,7 @@ def add_label(label):
     github_data['labels'][label.name] = label
 
 def create_label(repo, color):
+    label = None
     if options.verbose:
         print '- creating new label "' + repo + '"'
     if not options.dry_run:
