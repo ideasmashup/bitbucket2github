@@ -203,7 +203,49 @@ def create_label(repo, color):
 # create label for repository (for multi-repos merges?)
 create_label(options.repository, COLOR_REPOS)
 
+# import issues kinds and priorities as labels
+# -------------------------------------------------------------
+def import_kinds():
+    # only import as labels when they don't exist already
+    labels = ['proposal', 'task']
 
+    if options.verbose:
+        print 'Importing '+ `len(labels)` +' (s)...'
+
+    count = 0
+    for label in labels:
+        count += 1
+        print '- importing #'+ `count`
+        if not options.dry_run:
+            label = create_label(label, COLOR_KIND)
+    
+    if options.verbose:
+        print 'Done importing kinds.'
+
+    return labels
+
+def import_priorities():
+    labels = ['major', 'trivial', 'minor', 'critical', 'blocker']
+
+    if options.verbose:
+        print 'Importing '+ `len(labels)` +' (s)...'
+
+    count = 0
+    for label in labels:
+        count += 1
+        print '- importing #'+ `count`
+        if not options.dry_run:
+            label = create_label(label, COLOR_PRIORITY)
+    
+    if options.verbose:
+        print 'Done importing priorities.'
+
+    return labels
+
+
+import_kinds()
+import_priorities()
+# -------------------------------------------------------------
 
 # copy versions as labels
 # -------------------------------------------------------------
