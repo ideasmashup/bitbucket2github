@@ -194,7 +194,7 @@ def create_label(repo, color):
     if options.verbose:
         print '- creating new label "' + repo + '"'
     if not options.dry_run:
-        label = r.create_label(repo, COLOR_REPOS)
+        label = r.create_label(repo, color)
         add_label(label)
 
     return label
