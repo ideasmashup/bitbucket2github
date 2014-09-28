@@ -57,8 +57,10 @@ DEFAULTS = {
 }
 
 COLOR_COMPONENT = "ff9900"
-COLOR_VERSION = "ffcc00"
-COLOR_REPOS   = "ccff00"
+COLOR_VERSION   = "ffcc00"
+COLOR_REPOS     = "ccff00"
+COLOR_KIND      = "cccc00"
+COLOR_PRIORITY  = "ff6600"
 
 count = 0
 github_data = {}
