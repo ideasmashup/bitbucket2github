@@ -390,6 +390,38 @@ github_data['attachments'] = import_attachments(bitbucket_data['attachments'])
 #     },
 # ],
 
+def issue_labels(issue):
+    labels = []
+
+    if options.verbose:
+        print 'Extracting all labels from issue: ' + issue['title']
+
+    if options.verbose:
+        print '- extracting as label : repo name : ' + options.repository
+    labels.append(r.get_label(options.repository))
+
+    if issue['version'] is not None or type(issue['version']) is str:
+        if options.verbose:
+            print '- extracting as label: '+ str(issue['version'])
+        labels.append(r.get_label(issue['version']))
+
+    if issue['component'] is not None or type(issue['component']) is str:
+        if options.verbose:
+            print '- extracting as label: '+ str(issue['component'])
+        labels.append(r.get_label(issue['component']))
+
+    if issue['priority'] is not None or type(issue['priority']) is str:
+        if options.verbose:
+            print '- extracting as label: '+ str(issue['priority'])
+        labels.append(r.get_label(issue['priority']))
+
+    if issue['kind'] is not None or type(issue['kind']) is str:
+        if options.verbose:
+            print '- extracting as label: '+ str(issue['kind'])
+        labels.append(r.get_label(issue['kind']))
+
+    return labels
+
 def issue_content(issue):
     content = "*original issue: *" # add all missing details after import here
     content += issue['content']
