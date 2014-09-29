@@ -22,7 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import sys
 import json
 import getpass
 import datetime
@@ -50,10 +49,11 @@ parser.add_option("-f", "--file", dest="json_file", default="db-1.0.json",
 (options, args) = parser.parse_args()
 
 # config values
+config = None
+
 DEFAULTS = {
     # default today's date for bitbucket data that doesn't have one (milestones...)
     'date' : datetime.date.today()
-    
 }
 
 COLOR_COMPONENT = "ff9900"
@@ -268,7 +268,7 @@ def import_versions(versions):
     labels = []
 
     if options.verbose:
-        print 'Importing '+ `len(versions)` +' versions(s)...'
+        print 'Importing '+ `len(versions)` +' version(s)...'
 
     count = 0
     for version in versions:
@@ -282,6 +282,7 @@ def import_versions(versions):
         print 'Done importing versions.'
 
     return labels
+
 
 import_versions(bitbucket_data['versions'])
 # -------------------------------------------------------------
@@ -329,6 +330,7 @@ def import_components(components):
         print 'Done importing components.'
 
     return labels
+
 
 import_components(bitbucket_data['components'])
 # -------------------------------------------------------------
