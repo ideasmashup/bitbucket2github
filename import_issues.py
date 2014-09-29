@@ -446,8 +446,8 @@ def import_issues(issues):
             content = issue_content(issue)
             assignee = issue['assignee']
             milestone = github_data['milestones'][issue['milestone']]
-            label = issue['label']
-            issue = r.create_issue(title, content, assignee, milestone, label)
+            labels = issue_labels(issue)
+            issue = r.create_issue(title, content, assignee, milestone, labels)
             output['id'] = issue
 
     print 'Done importing issues.'
