@@ -84,14 +84,18 @@ if not options.dry_run:
 
 # load issues json file
 # -------------------------------------------------------------
-if options.verbose:
-    print 'Loading issues from: ' + options.json_file
+def load_json(filename):
+    if options.verbose:
+        print 'Loading data from JSON file: ' + filename
 
-json_str = open(options.json_file).read()
-bitbucket_data = json.loads(json_str)
+    json_str = open(filename).read()
+    data = json.loads(json_str)
+    if options.verbose:
+        pprint(data)
 
-if options.verbose:
-    pprint(bitbucket_data)
+    return data
+
+bitbucket_data = load_json(options.json_file)
 # -------------------------------------------------------------
 
 
