@@ -323,8 +323,6 @@ def import_components(components):
     for component in components:
         count += 1
         print '- importing #'+ `count`
-        if options.verbose:
-            print '- creating new label "' + component['name'] + '"'
         if not options.dry_run:
             label = create_label(component['name'], COLOR_COMPONENT)
             labels.append(label)
