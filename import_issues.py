@@ -69,24 +69,9 @@ count = 0
 github_data = {}
 bitbucket_data = {}
 
-# connect to GitHub API v3 
-# see: https://github.com/jacquev6/PyGithub
-# see: https://developer.github.com/v3/
-from github import Github
-
-if not options.dry_run:
-    print 'Please enter your github password'
-    github_password = getpass.getpass()
-    github_login = options.github_login
-    g = Github(github_login, github_password)
-
-    # load target repo
-    r = g.get_user().get_repo(options.repository)
-    print 'Opening GitHub repository: ' + r.name
 
 
-# load issues json file
-# -------------------------------------------------------------
+
 def load_json(filename):
     if options.verbose:
         print 'Loading data from JSON file: ' + filename
@@ -97,6 +82,37 @@ def load_json(filename):
         pprint(data)
 
     return data
+
+
+# load config file
+if options.config_file is not None:
+    config = load_json(options.config_file)
+
+# connect to GitHub API v3 
+# see: https://github.com/jacquev6/PyGithub
+# see: https://developer.github.com/v3/
+from github import Github
+
+if not options.dry_run:
+    print 'Please enter your github password'
+    if config and config['login']['github']['pass'] is not None:
+        github_password = config['login']['github']['pass']
+    else:
+        github_password = getpass.getpass()
+
+    if config and config['login']['github']['pass'] is not None:
+        github_login = config['login']['github']['user']
+    else:
+        github_login = options.github_login
+
+    g = Github(github_login, github_password)
+
+    # load target repo
+    r = g.get_user().get_repo(options.repository)
+    print 'Opening GitHub repository: ' + r.name
+
+# load issues json file
+# -------------------------------------------------------------
 
 bitbucket_data = load_json(options.json_file)
 # -------------------------------------------------------------
