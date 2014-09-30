@@ -40,6 +40,9 @@ parser.add_option("-v", "--verbose", action="store_true", dest="verbose", defaul
 parser.add_option("-u", "--username", dest="github_login",
     help="Username of target GitHub account.")
 
+parser.add_option("-c", "--conf", action="store_true", dest="config_file", default=None,
+    help="JSON config file to use for migration settings.")
+
 parser.add_option("-r", "--repository", dest="repository",
     help="GitHub repository where to import the issues")
 
