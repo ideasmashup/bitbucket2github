@@ -37,17 +37,17 @@ parser.add_option("-t", "--dry-run", action="store_true", dest="dry_run", defaul
 parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=False,
     help="Show detailed output of issues entries processing.")
 
-parser.add_option("-u", "--username", dest="github_login",
+parser.add_option("-u", "--username", dest="github_login", default=None,
     help="Username of target GitHub account.")
 
-parser.add_option("-c", "--conf", action="store_true", dest="config_file", default=None,
+parser.add_option("-c", "--conf", dest="config_file", default=None,
     help="JSON config file to use for migration settings.")
 
 parser.add_option("-r", "--repository", dest="repository",
-    help="GitHub repository where to import the issues")
+    help="GitHub repository where to import the issues.")
 
 parser.add_option("-f", "--file", dest="json_file", default="db-1.0.json",
-    help="Source JSON file containing the issues to import")
+    help="Source JSON file containing the issues to import.")
 
 (options, args) = parser.parse_args()
 
