@@ -86,7 +86,7 @@ def load_json(filename):
 
 # load config file
 if options.config_file is not None:
-    config = load_json(options.config_file)
+    config = load_json(str(options.config_file))
 
 # connect to GitHub API v3 
 # see: https://github.com/jacquev6/PyGithub
@@ -94,16 +94,24 @@ if options.config_file is not None:
 from github import Github
 
 if not options.dry_run:
-    print 'Please enter your github password'
-    if config and config['login']['github']['pass'] is not None:
+    if config is not None and config['login']['github']['pass'] is not None:
+        if options.verbose:
+            print '- fetching password from config file'
         github_password = config['login']['github']['pass']
     else:
+        print 'Please enter your github password'
         github_password = getpass.getpass()
 
-    if config and config['login']['github']['pass'] is not None:
+    if config is not None and config['login']['github']['user'] is not None:
+        if options.verbose:
+            print '- fetching login from config file'
         github_login = config['login']['github']['user']
-    else:
+    elif options.github_login is not None:
+        if options.verbose:
+            print '- fetching login from script -u parameter value'
         github_login = options.github_login
+    else:
+        github_login = raw_input('Please enter your github login')
 
     g = Github(github_login, github_password)
 
