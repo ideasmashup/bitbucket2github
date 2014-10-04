@@ -1,14 +1,12 @@
 {
-	"login" {
-		// unused section for now
+	"login" : {
 		"bitbucket" : {
 			"user" : "",
-			"pass" : "",
+			"pass" : ""
 		},
 		"github" : {
-			// better to use a "neutral" admin user because it will own all imported issues/comments
 			"user" : "",
-			"pass" : "",
+			"pass" : ""
 		}
 	},
 
@@ -17,36 +15,29 @@
 		"versions" :   "ffcc00",
 		"components" : "ff9900",
 		"kinds" :      "cccc00",
-		"priorities" : "ff6600",
+		"priorities" : "ff6600"
 	},
 
-	"users" : [
-		"" : {
+	"users" : {
 			"bitbucket" : {
 				"fullname" : "",
-/*				"user" : "",   now using element's key instead */
-				"mail" : "",
+				"mail" : ""
 			}, 
 			"github" : {
 				"fullname" : "",
 				"user" : "",
-				"mail" : "",
+				"mail" : ""
 			}
 		}
-	],
+	},
 
-	/*
-		name of the GitHub repo into which all merged repos should go
-	*/
-	"merge_repo" : "",
+	"merge_repo" : "test",
 
-	"repos" : [
-		"" : {
-			"name" : "",
+	"repos" : {
 			"wiki" : true,
 			"issues" : true,
 			"downloads" : true,
-			"merge" : false
+			"merge" : true
 		},
 		"" : {
 			"name" : "",
@@ -61,8 +52,8 @@
 			"issues" : true,
 			"downloads" : true,
 			"merge" : false
-		},
-	],
+		}
+	},
 
 	"issues" : {
 		"labels" : true,
@@ -71,6 +62,6 @@
 		"components" : true,
 		"versions" : true,
 		"milestones" : true,
-		"date_offset" : 0,
+		"date_offset" : 0
 	}
 }
