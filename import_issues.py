@@ -453,7 +453,7 @@ def issue_labels(issue):
 
 def issue_content(issue):
     content = "*original issue: *" # add all missing details after import here
-    content += issue['content']
+    content += issue['content'].decode('utf-8')
     return content
 
 def import_issues(issues):
