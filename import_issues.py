@@ -95,17 +95,17 @@ from github import Github
 
 if not options.dry_run:
     if config is not None and config['login']['github']['pass'] is not None:
-        if options.verbose:
-            print '- fetching password from config file'
         github_password = config['login']['github']['pass']
+        if options.verbose:
+            print '- fetching password from config file : ' + github_password
     else:
         print 'Please enter your github password'
         github_password = getpass.getpass()
 
     if config is not None and config['login']['github']['user'] is not None:
-        if options.verbose:
-            print '- fetching login from config file'
         github_login = config['login']['github']['user']
+        if options.verbose:
+            print '- fetching login from config file : ' + github_login
     elif options.github_login is not None:
         if options.verbose:
             print '- fetching login from script -u parameter value'
