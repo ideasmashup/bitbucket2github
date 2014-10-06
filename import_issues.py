@@ -115,8 +115,19 @@ if not options.dry_run:
 
     g = Github(github_login, github_password)
 
+    if config is not None and config['merge_repo'] is not None:
+        github_repo = config['merge_repo']
+        if options.verbose:
+            print '- fetching merge repo from config file ' + github_repo
+    elif options.repository is not None:
+        if options.verbose:
+            print '- fetching merge repo from script -r parameter value ' + github_repo
+        github_repo = options.repository
+    else:
+        github_repo = raw_input('Please enter the github target repository name')
+
     # load target repo
-    r = g.get_user().get_repo(options.repository)
+    r = g.get_user().get_repo(github_repo)
     print 'Opening GitHub repository: ' + r.name
 
 # load issues json file
