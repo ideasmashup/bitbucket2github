@@ -251,7 +251,7 @@ def create_label(repo, color):
 # -------------------------------------------------------------
 
 # create label for repository (for multi-repos merges?)
-create_label(options.repository, COLOR_REPOS)
+create_label(github_repo, COLOR_REPOS)
 
 # import issues kinds and priorities as labels
 # -------------------------------------------------------------
@@ -447,8 +447,8 @@ def issue_labels(issue):
         print 'Extracting all labels from issue: ' + issue['title']
 
     if options.verbose:
-        print '- extracting as label : repo name : ' + options.repository
-    labels.append(r.get_label(options.repository))
+        print '- extracting as label : repo name : ' + github_repo
+    labels.append(r.get_label(github_repo))
 
     if issue['version'] is not None or type(issue['version']) is str:
         if options.verbose:
