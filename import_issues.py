@@ -132,6 +132,16 @@ if not options.dry_run:
 
 # load issues json file
 # -------------------------------------------------------------
+    if config is not None and config['merge_repo'] is not None:
+        github_repo = config['merge_repo']
+        if options.verbose:
+            print '- fetching merge repo from config file ' + github_repo
+    elif options.repository is not None:
+        if options.verbose:
+            print '- fetching merge repo from script -r parameter value ' + github_repo
+        github_repo = options.repository
+    else:
+        github_repo = raw_input('Please enter the github target repository name')
 
 bitbucket_data = load_json(options.json_file)
 # -------------------------------------------------------------
