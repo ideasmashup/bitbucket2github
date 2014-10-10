@@ -85,7 +85,8 @@ def load_json(filename):
     json_str = open(filename).read()
     data = json.loads(json_str)
     if options.verbose:
-        pprint(data)
+        print '- loaded ' + `len(json_str)` + ' bytes'
+        # pprint(data)
 
     return data
 
