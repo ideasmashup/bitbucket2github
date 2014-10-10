@@ -78,6 +78,9 @@ github_subtree = ''
 
 
 
+if options.verbose:
+    print 'BitBucket to GitHub v0.7'
+
 def load_json(filename):
     if options.verbose:
         print 'Loading data from JSON file: ' + filename
