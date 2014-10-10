@@ -129,13 +129,13 @@ if not options.dry_run:
     g = Github(github_login, github_password)
 
     # fetch then loop through all repos entries from the config file
-    if config is not None and config['repos'] is not None:
+    if config is not None and config.get('repos') is not None:
         bitbucket_repos = config['repos']
     else:
         bitbucket_repos = {}
 
     # global merge repo
-    if config is not None and config['merge_repo'] is not None:
+    if config is not None and config.get('merge_repo') is not None:
         github_merge_repo = config['merge_repo']
         if options.verbose:
             print '- fetching merge repo from config file ' + github_merge_repo
