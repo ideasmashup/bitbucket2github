@@ -37,14 +37,14 @@
 			"wiki" : true,
 			"issues" : true,
 			"downloads" : true,
-			"merge" : true
+			"merge" : "test"
 		},
 		"" : {
 			"name" : "",
 			"wiki" : true,
 			"issues" : true,
 			"downloads" : true,
-			"merge" : false
+			"merge" : "test"
 		},
 		"" : {
 			"name" : "",
