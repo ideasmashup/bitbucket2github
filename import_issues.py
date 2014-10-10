@@ -69,6 +69,12 @@ count = 0
 github_data = {}
 bitbucket_data = {}
 
+github_login = None
+github_password = None
+bitbucket_repo = None
+github_merge_repo = None
+github_repo = None
+github_subtree = ''
 
 
 
@@ -121,27 +127,31 @@ if not options.dry_run:
     else:
         bitbucket_repos = {}
 
-    for bitbucket_repo, repo_import_settings in bitbucket_repos.items():
-        
-        
-        if config is not None and config['merge_repo'] is not None:
-            github_merge_repo = config['merge_repo']
-            if options.verbose:
-                print '- fetching merge repo from config file ' + github_merge_repo
+    # global merge repo
+    if config is not None and config['merge_repo'] is not None:
+        github_merge_repo = config['merge_repo']
+        if options.verbose:
+            print '- fetching merge repo from config file ' + github_merge_repo
+
+
+    for bitbucket_repo_name, bitbucket_repo in bitbucket_repos.items():
+        if options.verbose:
+            print 'Start importing repo ' + bitbucket_repo_name
+
+        if bitbucket_repo['merge'] is False:
+            github_repo = bitbucket_repo['name']
+            github_subtree = ''
+        elif bitbucket_repo['merge'] is True and github_merge_repo is not None:
+            github_repo = github_merge_repo
+            github_subtree = bitbucket_repo['name']
         else:
-            github_merge_repo = None
-    
-        if config is not None and config['merge_repo'] is not None:
-            github_repo = config['merge_repo']
-            if options.verbose:
-                print '- fetching merge repo from config file ' + github_repo
-        elif options.repository is not None:
-            if options.verbose:
-                print '- fetching merge repo from script -r parameter value ' + github_repo
-            github_repo = options.repository
-        else:
-            github_repo = raw_input('Please enter the github target repository name')
-    
+            github_repo = bitbucket_repo['merge']
+            github_subtree = bitbucket_repo['name']
+
+        if options.verbose:
+            print '- imported as ' + github_repo + '(/' + github_subtree + ')'
+
+
         # load target repo
         r = g.get_user().get_repo(github_repo)
         print 'Opening GitHub repository: ' + r.name
@@ -598,3 +608,5 @@ if not options.dry_run:
         
         print 'Done importing logs.'
         # -------------------------------------------------------------
+
+        print 'Finished import of '+ bitbucket_repo_name
