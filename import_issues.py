@@ -141,7 +141,7 @@ if not options.dry_run:
             print '- fetching merge repo from config file ' + github_merge_repo
 
 
-    for bitbucket_repo_name, bitbucket_repo in bitbucket_repos.items():
+    for bitbucket_repo_name, bitbucket_repo in bitbucket_repos.iteritems():
         if options.verbose:
             print 'Start importing repo ' + bitbucket_repo_name
 
