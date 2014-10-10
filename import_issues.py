@@ -100,14 +100,6 @@ if options.config_file is not None:
 from github import Github
 
 if not options.dry_run:
-    if config is not None and config['login']['github']['pass'] is not None:
-        github_password = config['login']['github']['pass']
-        if options.verbose:
-            print '- fetching password from config file ' + ('*' * len(github_password))[:len(github_password)]
-    else:
-        print 'Please enter your github password'
-        github_password = getpass.getpass()
-
     if config is not None and config['login']['github']['user'] is not None:
         github_login = config['login']['github']['user']
         if options.verbose:
@@ -118,6 +110,14 @@ if not options.dry_run:
             print '- fetching login from script -u parameter value ' + github_login
     else:
         github_login = raw_input('Please enter your github login')
+
+    if config is not None and config['login']['github']['pass'] is not None:
+        github_password = config['login']['github']['pass']
+        if options.verbose:
+            print '- fetching password from config file ' + ('*' * len(github_password))[:len(github_password)]
+    else:
+        print 'Please enter your github password'
+        github_password = getpass.getpass()
 
     g = Github(github_login, github_password)
 
@@ -393,7 +393,7 @@ if not options.dry_run:
                 print 'Done importing components.'
         
             return labels
-        
+         
         
         import_components(bitbucket_data['components'])
         # -------------------------------------------------------------
