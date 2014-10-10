@@ -123,6 +123,9 @@ if not options.dry_run:
         print 'Please enter your github password: '
         github_password = getpass.getpass()
 
+    if options.verbose:
+        print '- connecting to GitHub using: ' + github_login + ' ' + ('*' * len(github_password))[:len(github_password)]
+
     g = Github(github_login, github_password)
 
     # fetch then loop through all repos entries from the config file
