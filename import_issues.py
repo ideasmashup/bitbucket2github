@@ -29,6 +29,7 @@ import datetime
 # parse parameters and show help
 from optparse import OptionParser
 from pprint import pprint
+from github.GithubException import GithubException
 parser = OptionParser()
 
 parser.add_option("-t", "--dry-run", action="store_true", dest="dry_run", default=False,
@@ -240,8 +241,10 @@ if not options.dry_run:
                 if options.verbose:
                     print '- creating new "' + milestone['name'] + '" milestone with no description and deadline set to ('+ DEFAULTS['date'].strftime("%Y-%m-%dT%H:%M:%SZ") +')'
                 if not options.dry_run:
-                    github_milestones[milestone['name']] = r.create_milestone(milestone['name'], "open", "", datetime.date.today())
-        
+                    try:
+                        github_milestones[milestone['name']] = r.create_milestone(milestone['name'], "open", "", datetime.date.today())
+                    except GithubException as ex:
+                        print '- failed to create milestone: ' + milestone['name'] + '\n    ' + str(ex)
             print 'Done importing milestones.'
             return github_milestones
         
