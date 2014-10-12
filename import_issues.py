@@ -664,8 +664,7 @@ if not options.dry_run:
         #   },
         # ],
         def comment_content(comment):
-            # TODO use template to format data
-            content = comment['content']
+            content = pystache.render(load_template('comment'), comment)
             return content
         
         def import_comments(comments):
