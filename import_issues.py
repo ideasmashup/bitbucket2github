@@ -475,6 +475,21 @@ if not options.dry_run:
         #     },
         # ],
         
+        def load_template(filename):
+            ext = '.md'
+            tpl_path = get_script_path() +'/templates/'+ filename + ext
+            
+            if os.path.isfile(filename):
+                None # do nothing because filepath is ok
+            elif os.path.isfile(tpl_path):
+                filename = tpl_path # default template dir 
+            elif os.path.isfile(filename + ext):
+                filename = filename + ext # template without extension
+
+            if options.verbose:
+                print 'Loading template file: ' + filename
+            
+            return open(filename).read()
         def issue_labels(issue):
             labels = []
         
