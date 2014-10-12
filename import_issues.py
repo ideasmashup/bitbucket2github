@@ -32,6 +32,7 @@ import os
 from optparse import OptionParser
 from pprint import pprint
 from github.GithubException import GithubException
+
 parser = OptionParser()
 
 parser.add_option("-t", "--dry-run", action="store_true", dest="dry_run", default=False,
@@ -75,6 +76,7 @@ bitbucket_data = {}
 
 github_login = None
 github_password = None
+github_org = None
 bitbucket_repo = None
 github_merge_repo = None
 github_repo = None
@@ -168,10 +170,26 @@ if not options.dry_run:
             else:
                 print '- imported as ' + github_repo
 
-
-        # load target repo
-        r = g.get_user().get_repo(github_repo)
-        print 'Opening GitHub repository: ' + r.name
+        # check if must use org or not
+        if config is not None and 'org' in config['login']['github']:
+            github_org = config['login']['github']['org']
+            if options.verbose:
+                print '- will use organization as repository parent: '+ github_org
+            # load organization repo
+            try:
+                r = g.get_organization(github_org).get_repo(github_repo)
+                print 'Opening GitHub '+ github_org +' repository: ' + r.name
+            except GithubException as e:
+                print 'Github repository '+ github_repo +' does not exist yet! create it !'
+                exit(-1)
+        else:
+            # load user repo
+            try:
+                r = g.get_user().get_repo(github_repo)
+                print 'Opening  '+ github_login +' GitHub repository: ' + r.name
+            except GithubException as e:
+                print 'Github repository '+ github_repo +' does not exist yet! create it !'
+                exit(-1)
 
         # load issues json file
         # -------------------------------------------------------------
@@ -443,7 +461,6 @@ if not options.dry_run:
         
         github_data['attachments'] = import_attachments(bitbucket_data['attachments'])
         # -------------------------------------------------------------
-        
         
         
         # copy all issues
