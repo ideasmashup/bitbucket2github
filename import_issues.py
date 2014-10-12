@@ -491,6 +491,21 @@ if not options.dry_run:
                 print 'Loading template file: ' + filename
             
             return open(filename).read()
+        
+        def convert_user(bitbucket_username):
+            # by default the "importer" user name is used
+            github_username = github_login
+
+            # otherwise use config file 'users' entries
+            if config is not None and 'users' in config and bitbucket_username in config.get('users'):
+                try:
+                    github_username = config['users'][bitbucket_username]['github']['user'];
+                except Exception as e:
+                    pprint(e)
+                if options.verbose:
+                    print 'converted '+ bitbucket_username +' as '+ github_username 
+            return github_username
+        
         def issue_labels(issue):
             labels = []
         
@@ -540,7 +555,7 @@ if not options.dry_run:
                 if not options.dry_run:
                     title = issue['title']
                     content = issue_content(issue)
-                    assignee = issue['assignee']
+                    assignee = convert_user(issue['assignee'])
                     milestone = github_data['milestones'][issue['milestone']]
                     labels = issue_labels(issue)
                     issue = r.create_issue(title, content, assignee, milestone, labels)
