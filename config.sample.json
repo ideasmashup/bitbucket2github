@@ -32,20 +32,18 @@
 		}
 	},
 
-	"merge_repo" : "test",
-
 	"repos" : {
 			"wiki" : true,
 			"issues" : true,
 			"downloads" : true,
-			"merge" : "test"
+			"merge" : "migrate-test"
 		},
 		"" : {
 			"name" : "",
 			"wiki" : true,
 			"issues" : true,
 			"downloads" : true,
-			"merge" : "test"
+			"merge" : "migrate-test"
 		},
 		"" : {
 			"name" : "",
