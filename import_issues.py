@@ -549,6 +549,20 @@ if not options.dry_run:
             
             return open(filename).read()
         
+        def prepare_issue(issue):
+            # inject new keys into issue for proper rendering of templae
+            if config is not None and 'users' in config and issue['reporter'] in config.get('users'):
+                try:
+                    issue['github_reporter'] = config['users'][issue['reporter']]['github']['user']
+                    issue['github_reporter_full'] = config['users'][issue['reporter']]['github']['fullname']
+                except Exception as e:
+                    pprint(e)
+            else: 
+                # if cannot find convertible user, use current user
+                issue['github_reporter'] = github_login 
+                issue['github_reporter_full'] = 'A Bitbucket User'
+            return issue
+        
         def convert_user(bitbucket_username):
             # by default the "importer" user name is used
             github_username = github_login
@@ -596,7 +610,7 @@ if not options.dry_run:
             return labels
         
         def issue_content(issue):
-            content = pystache.render(load_template('issue'), issue)
+            content = pystache.render(load_template('issue'), prepare_issue(issue))
             return content
         
         def import_issues(issues):
