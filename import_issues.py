@@ -75,7 +75,7 @@ github_password = None
 bitbucket_repo = None
 github_merge_repo = None
 github_repo = None
-github_subtree = ''
+github_subtree = None
 
 
 
@@ -148,7 +148,7 @@ if not options.dry_run:
 
         if bitbucket_repo['merge'] is False:
             github_repo = bitbucket_repo['name']
-            github_subtree = ''
+            github_subtree = None
         elif bitbucket_repo['merge'] is True and github_merge_repo is not None:
             github_repo = github_merge_repo
             github_subtree = bitbucket_repo['name']
@@ -157,7 +157,10 @@ if not options.dry_run:
             github_subtree = bitbucket_repo['name']
 
         if options.verbose:
-            print '- imported as ' + github_repo + '(/' + github_subtree + ')'
+            if github_subtree is not None:
+                print '- imported as ' + github_repo + '(/' + github_subtree + ')'
+            else:
+                print '- imported as ' + github_repo
 
 
         # load target repo
