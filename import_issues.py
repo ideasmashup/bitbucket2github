@@ -291,14 +291,22 @@ if not options.dry_run:
         def add_label(label):
             github_data['labels'][label.name] = label
         
-        def create_label(repo, color):
+        def create_label(name, color):
             label = None
             if options.verbose:
-                print '- creating new label "' + repo + '"'
+                print '- creating new label "' + name + '"'
             if not options.dry_run:
-                label = r.create_label(repo, color)
-                add_label(label)
-        
+                try:
+                    label = r.create_label(name.encode('utf-8'), color)
+                    add_label(label)
+                except GithubException as ex:
+                    label = r.get_label(name)
+                    if label is not None:
+                        print '- label already exists, fetching existing value: '+ str(label)
+                        add_label(label) 
+                    else:
+                        print '- failed to create label: ' + name + '\n    ' + str(ex)
+
             return label
         # -------------------------------------------------------------
         
@@ -317,11 +325,18 @@ if not options.dry_run:
                 print 'Importing '+ `len(labels)` +' (s)...'
         
             count = 0
-            for label in labels:
+            for name in labels:
                 count += 1
                 print '- importing #'+ `count`
                 if not options.dry_run:
-                    label = create_label(label, COLOR_KIND)
+                    try:
+                        label = r.create_label(name, COLOR_KIND)
+                    except GithubException as ex:
+                        label = r.get_label(name)
+                        if label is not None:
+                            print '- label already exists, fetching existing value: '+ str(label)
+                        else:
+                            print '- failed to create label: ' + name + '\n    ' + str(ex)
             
             if options.verbose:
                 print 'Done importing kinds.'
@@ -335,12 +350,20 @@ if not options.dry_run:
                 print 'Importing '+ `len(labels)` +' (s)...'
         
             count = 0
-            for label in labels:
+            for name in labels:
                 count += 1
                 print '- importing #'+ `count`
                 if not options.dry_run:
-                    label = create_label(label, COLOR_PRIORITY)
-            
+                    try:
+                        label = r.create_label(name, COLOR_PRIORITY)
+                        
+                    except GithubException as ex:
+                        label = r.get_label(name)
+                        if label is not None:
+                            print '- label already exists, fetching existing value: '+ str(label)
+                        else:
+                            print '- failed to create label: ' + name + '\n    ' + str(ex)
+                
             if options.verbose:
                 print 'Done importing priorities.'
         
@@ -377,8 +400,16 @@ if not options.dry_run:
                 count += 1
                 print '- importing #'+ `count`
                 if not options.dry_run:
-                    label = create_label(version['name'], COLOR_VERSION)
-                    labels.append(label)
+                    try:
+                        label = create_label(version['name'], COLOR_VERSION)
+                        labels.append(label)
+                    except GithubException as ex:
+                        label = r.get_label(version['name'])
+                        if label is not None:
+                            print '- label already exists, fetching existing value: '+ str(label)
+                            labels.append(label)
+                        else:
+                            print '- failed to create label: ' + version['name'] + '\n    ' + str(ex)
             
             if options.verbose:
                 print 'Done importing versions.'
@@ -425,8 +456,17 @@ if not options.dry_run:
                 count += 1
                 print '- importing #'+ `count`
                 if not options.dry_run:
-                    label = create_label(component['name'], COLOR_COMPONENT)
-                    labels.append(label)
+                    try:
+                        label = create_label(component['name'], COLOR_VERSION)
+                        labels.append(label)
+                    except GithubException as ex:
+                        label = r.get_label(component['name'])
+                        if label is not None:
+                            print '- label already exists, fetching existing value: '+ str(label)
+                            labels.append(label)
+                        else:
+                            print '- failed to create label: ' + component['name'] + '\n    ' + str(ex)
+                    
         
             if options.verbose:
                 print 'Done importing components.'
