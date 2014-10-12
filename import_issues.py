@@ -25,6 +25,7 @@
 import json
 import getpass
 import datetime
+import os
 
 # parse parameters and show help
 from optparse import OptionParser
@@ -83,6 +84,9 @@ github_subtree = None
 if options.verbose:
     print 'BitBucket to GitHub v0.7'
 
+def get_script_path():
+    return os.path.dirname(os.path.realpath(__file__))
+    
 def load_json(filename):
     if options.verbose:
         print 'Loading data from JSON file: ' + filename
