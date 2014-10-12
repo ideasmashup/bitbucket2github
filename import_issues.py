@@ -63,6 +63,7 @@ DEFAULTS = {
 COLOR_COMPONENT = "ff9900"
 COLOR_VERSION   = "ffcc00"
 COLOR_REPOS     = "ccff00"
+COLOR_SUBTREE   = "66cc00"
 COLOR_KIND      = "cccc00"
 COLOR_PRIORITY  = "ff6600"
 
@@ -280,6 +281,8 @@ if not options.dry_run:
         
         # create label for repository (for multi-repos merges?)
         create_label(github_repo, COLOR_REPOS)
+        if github_subtree is not None:
+            create_label(github_subtree, COLOR_REPOS)
         
         # import issues kinds and priorities as labels
         # -------------------------------------------------------------
