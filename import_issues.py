@@ -25,6 +25,7 @@
 import json
 import getpass
 import datetime
+import pystache
 import os
 
 # parse parameters and show help
@@ -523,8 +524,7 @@ if not options.dry_run:
             return labels
         
         def issue_content(issue):
-            content = "*original issue: *" # add all missing details after import here
-            content += issue['content'].decode('utf-8')
+            content = pystache.render(load_template('issue'), issue)
             return content
         
         def import_issues(issues):
