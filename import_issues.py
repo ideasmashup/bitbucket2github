@@ -560,7 +560,7 @@ if not options.dry_run:
             else: 
                 # if cannot find convertible user, use current user
                 issue['github_reporter'] = github_login 
-                issue['github_reporter_full'] = 'A Bitbucket User'
+                issue['github_reporter_full'] = '( '+ issue['reporter'] +' )'
             return issue
         
         def convert_user(bitbucket_username):
