@@ -630,7 +630,7 @@ if not options.dry_run:
                     milestone = github_data['milestones'][issue['milestone']]
                     labels = issue_labels(issue)
                     issue = r.create_issue(title, content, assignee, milestone, labels)
-                    output['id'] = issue
+                    output[issue['id']] = issue
         
             print 'Done importing issues.'
         
