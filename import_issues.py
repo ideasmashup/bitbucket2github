@@ -695,8 +695,15 @@ if not options.dry_run:
                     print '- creating new comment "' + comment['content'] + '"'
                 if not options.dry_run:
                     content = comment_content(comment)
-                    out = r.create_comment(content)
-                    output.append(out)
+                    if comment['issue'] in github_data['issues']:
+                        issue = github_data['issues'][comment['issue']]
+                        if options.verbose:
+                            print '- creating new comment for issue #'+ comment['issue']
+                        out = issue.create_issue_comment(content)
+                        output.append(out)
+                    else:
+                        if options.verbose:
+                            print '- failed to import comment because issue #'+ comment['issue'] + ' not found!' 
         
             print 'Done importing comments.'
         
