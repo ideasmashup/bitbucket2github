@@ -187,16 +187,18 @@ if not options.dry_run:
             try:
                 r = g.get_organization(github_org).get_repo(github_repo)
                 print 'Opening GitHub '+ github_org +' repository: ' + r.name
-            except GithubException as e:
+            except GithubException:
                 print 'Github repository '+ github_repo +' does not exist yet! create it !'
+                print traceback.format_exc()
                 exit(-1)
         else:
             # load user repo
             try:
                 r = g.get_user().get_repo(github_repo)
                 print 'Opening  '+ github_login +' GitHub repository: ' + r.name
-            except GithubException as e:
+            except GithubException:
                 print 'Github repository '+ github_repo +' does not exist yet! create it !'
+                print traceback.format_exc()
                 exit(-1)
 
         # load issues json file
@@ -278,8 +280,12 @@ if not options.dry_run:
                 if not options.dry_run:
                     try:
                         github_milestones[milestone['name']] = r.create_milestone(milestone['name'], "open", "", datetime.date.today())
-                    except GithubException as ex:
-                        print '- failed to create milestone: ' + milestone['name'] + '\n    ' + str(ex)
+                    except GithubException:
+                        # FIXME find a way to fetch the existing milestones
+                        # m = r.get_milestone(number)
+                        # github_milestones[milestone['name']]
+                        print '- failed to create milestone: '
+                        print traceback.format_exc()
             print 'Done importing milestones.'
             return github_milestones
         
@@ -563,8 +569,8 @@ if not options.dry_run:
                 try:
                     issue['github_reporter'] = config['users'][issue['reporter']]['github']['user']
                     issue['github_reporter_full'] = config['users'][issue['reporter']]['github']['fullname']
-                except Exception as e:
-                    pprint(e)
+                except Exception:
+                    print traceback.format_exc()
             else: 
                 # if cannot find convertible user, use current user
                 issue['github_reporter'] = github_login 
@@ -579,8 +585,8 @@ if not options.dry_run:
             if config is not None and 'users' in config and bitbucket_username in config.get('users'):
                 try:
                     github_username = config['users'][bitbucket_username]['github']['user'];
-                except Exception as e:
-                    pprint(e)
+                except Exception:
+                    print traceback.format_exc()
                 if options.verbose:
                     print 'converted '+ bitbucket_username +' as '+ github_username 
             return github_username
@@ -678,8 +684,8 @@ if not options.dry_run:
                 try:
                     comment['github_user'] = config['users'][comment['user']]['github']['user']
                     comment['github_user_full'] = config['users'][comment['user']]['github']['fullname']
-                except Exception as e:
-                    pprint(e)
+                except Exception:
+                    print traceback.format_exc()
             else: 
                 # if cannot find convertible user, use current user
                 comment['github_reporter'] = github_login 
@@ -707,8 +713,12 @@ if not options.dry_run:
                         issue = github_data['issues'][comment['issue']]
                         if options.verbose:
                             print '- creating new comment for issue #'+ comment['issue']
-                        out = issue.create_issue_comment(content)
-                        output.append(out)
+                        try:
+                            out = issue.create_issue_comment(content)
+                            output.append(out)
+                        except GithubException:
+                            print '- failed to create issue comment #' + comment['id']
+                            print traceback.format_exc()
                     else:
                         if options.verbose:
                             print '- failed to import comment because issue #'+ comment['issue'] + ' not found!' 
