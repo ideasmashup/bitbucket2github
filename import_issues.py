@@ -572,27 +572,27 @@ if not options.dry_run:
         
             if options.verbose:
                 print '- extracting as label : repo name : ' + github_repo
-            labels.append(r.get_label(github_repo))
+            labels.append(get_label(github_repo))
         
-            if issue['version'] is not None or type(issue['version']) is str:
+            if issue['version'] is not None:
                 if options.verbose:
-                    print '- extracting as label: '+ str(issue['version'])
-                labels.append(r.get_label(issue['version']))
+                    print '- extracting as label: '+ issue['version'].encode('utf-8')
+                labels.append(get_label(issue['version']))
         
-            if issue['component'] is not None or type(issue['component']) is str:
+            if issue['component'] is not None:
                 if options.verbose:
-                    print '- extracting as label: '+ str(issue['component'])
-                labels.append(r.get_label(issue['component']))
+                    print '- extracting as label: '+ issue['component'].encode('utf-8')
+                labels.append(get_label(issue['component']))
         
-            if issue['priority'] is not None or type(issue['priority']) is str:
+            if issue['priority'] is not None:
                 if options.verbose:
-                    print '- extracting as label: '+ str(issue['priority'])
-                labels.append(r.get_label(issue['priority']))
+                    print '- extracting as label: '+ issue['priority'].encode('utf-8')
+                labels.append(get_label(issue['priority']))
         
-            if issue['kind'] is not None or type(issue['kind']) is str:
+            if issue['kind'] is not None:
                 if options.verbose:
-                    print '- extracting as label: '+ str(issue['kind'])
-                labels.append(r.get_label(issue['kind']))
+                    print '- extracting as label: '+ issue['kind'].encode('utf-8')
+                labels.append(get_label(issue['kind']))
         
             return labels
         
