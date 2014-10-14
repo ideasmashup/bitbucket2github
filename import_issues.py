@@ -638,13 +638,41 @@ if not options.dry_run:
                 if options.verbose:
                     print '- creating new issue "' + issue['title'] + '"'
                 if not options.dry_run:
-                    title = issue['title']
-                    content = issue_content(issue)
-                    assignee = convert_user(issue['assignee'])
-                    milestone = github_data['milestones'][issue['milestone']]
+                    if 'title' in issue and issue['title'] is not None:
+                        title = issue['title']
+                    else:
+                        title = 'Untitled #'+ issue['id']
+                    
+                    if 'content' in issue and issue['content'] is not None:
+                        content = issue_content(issue)
+                    else:
+                        content = ''
+                    
+                    if 'assignee' in issue and issue['assignee'] is not None:
+                        assignee = convert_user(issue['assignee'])
+                    else:
+                        assignee = None # no assignee
+                    
+                    if 'milestone' in issue and issue['milestone'] is not None:
+                        milestone = github_data['milestones'][issue['milestone']]
+                    else:
+                        milestone = None # assign no milestone 
+                    
                     labels = issue_labels(issue)
-                    issue = r.create_issue(title, content, assignee, milestone, labels)
-                    output[issue['id']] = issue
+                    
+                    try:
+                        # FIXME cannot use NotSet
+                        if assignee is None:
+                            out = r.create_issue(title, content)
+                        elif milestone is None:
+                            out = r.create_issue(title, content, assignee)
+                        else:
+                            out = r.create_issue(title, content, assignee, milestone, labels)
+                        
+                        output[issue['id']] = out
+                    except GithubException:
+                        print '- failed to create issue #' + issue['id']
+                        print traceback.format_exc()
         
             print 'Done importing issues.'
         
