@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from __future__ import unicode_literals
+# -*- coding: utf-8 -*-
 
 # Bitbucket to Github Migration Tools
 # -----------------------------------
@@ -231,9 +231,9 @@ if not options.dry_run:
                     count += 1
                     print '- importing #'+ `count` 
                     if options.verbose:
-                        print '- default '+ key.decode('utf-8') +' = '+ value.decode('utf-8') 
+                        print '- default '+ key +' = '+ value 
                     if not options.dry_run:
-                        output[key.decode('utf-8')] = value.decode('utf-8')
+                        output[key] = value
         
             print 'Done importing default values.'
             return output
@@ -295,7 +295,7 @@ if not options.dry_run:
         if options.verbose:
             print 'Imported milestones :'
             for mobj in github_data['milestones']:
-                print (mobj)
+                print '- '+ mobj.title()
         # -------------------------------------------------------------
         
         
@@ -322,18 +322,20 @@ if not options.dry_run:
         def create_label(name, color):
             label = None
             if options.verbose:
-                print '- creating new label "' + name + '"'
+                print '- creating new label "' + name.encode('utf-8') + '"'
             if not options.dry_run:
                 try:
                     label = r.create_label(name.encode('utf-8'), color)
                     add_label(label)
-                except GithubException as ex:
+                except GithubException:
                     label = r.get_label(name)
                     if label is not None:
-                        print '- label already exists, fetching existing value: '+ str(label)
+                        print '- label already exists, fetching existing value: '+ label.name().decode('utf-8')
+                        label = r.get_label(name.encode('utf-8'))
                         add_label(label) 
                     else:
-                        print '- failed to create label: ' + name + '\n    ' + str(ex)
+                        print '- failed to create label: ' + name.decode('utf-8')
+                        print traceback.format_exc()
 
             return label
         # -------------------------------------------------------------
@@ -575,7 +577,7 @@ if not options.dry_run:
             if options.verbose:
                 print 'Loading template file: ' + filename
             
-            return open(filename).read()
+            return open(filename).read().decode('utf-8')
         
         def prepare_issue(issue):
             # inject new keys into issue for proper rendering of templae
