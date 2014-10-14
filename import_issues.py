@@ -302,8 +302,22 @@ if not options.dry_run:
         
         # -------------------------------------------------------------
         github_data['labels'] = {}
+        
         def add_label(label):
             github_data['labels'][label.name] = label
+        
+        
+        def get_label(name):
+            label = None
+            if name in github_data['labels']:
+                label = github_data['labels'][name]
+            else:
+                try:
+                    label = r.get_label(name.encode('utf-8'))
+                except:
+                    print '- failed to find label: '+ name
+                
+            return label
         
         def create_label(name, color):
             label = None
