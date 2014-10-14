@@ -279,7 +279,8 @@ if not options.dry_run:
                     print '- creating new "' + milestone['name'] + '" milestone with no description and deadline set to ('+ DEFAULTS['date'].strftime("%Y-%m-%dT%H:%M:%SZ") +')'
                 if not options.dry_run:
                     try:
-                        github_milestones[milestone['name']] = r.create_milestone(milestone['name'], "open", "", datetime.date.today())
+                        out = r.create_milestone(milestone['name'], "open", "", datetime.date.today())
+                        github_milestones[milestone['name']] = out
                     except GithubException:
                         # FIXME find a way to fetch the existing milestones
                         # m = r.get_milestone(number)
@@ -359,19 +360,11 @@ if not options.dry_run:
                 count += 1
                 print '- importing #'+ `count`
                 if not options.dry_run:
-                    try:
-                        label = r.create_label(name, COLOR_KIND)
-                    except GithubException as ex:
-                        label = r.get_label(name)
-                        if label is not None:
-                            print '- label already exists, fetching existing value: '+ str(label)
-                        else:
-                            print '- failed to create label: ' + name + '\n    ' + str(ex)
+                    create_label(name, COLOR_KIND)
             
             if options.verbose:
                 print 'Done importing kinds.'
-        
-            return labels
+            
         
         def import_priorities():
             labels = ['major', 'trivial', 'minor', 'critical', 'blocker']
@@ -384,20 +377,11 @@ if not options.dry_run:
                 count += 1
                 print '- importing #'+ `count`
                 if not options.dry_run:
-                    try:
-                        label = r.create_label(name, COLOR_PRIORITY)
-                        
-                    except GithubException as ex:
-                        label = r.get_label(name)
-                        if label is not None:
-                            print '- label already exists, fetching existing value: '+ str(label)
-                        else:
-                            print '- failed to create label: ' + name + '\n    ' + str(ex)
+                    create_label(name, COLOR_PRIORITY)
                 
             if options.verbose:
                 print 'Done importing priorities.'
-        
-            return labels
+                
         
         
         import_kinds()
@@ -420,8 +404,6 @@ if not options.dry_run:
         # ],
         
         def import_versions(versions):
-            labels = []
-        
             if options.verbose:
                 print 'Importing '+ `len(versions)` +' version(s)...'
         
@@ -430,21 +412,10 @@ if not options.dry_run:
                 count += 1
                 print '- importing #'+ `count`
                 if not options.dry_run:
-                    try:
-                        label = create_label(version['name'], COLOR_VERSION)
-                        labels.append(label)
-                    except GithubException as ex:
-                        label = r.get_label(version['name'])
-                        if label is not None:
-                            print '- label already exists, fetching existing value: '+ str(label)
-                            labels.append(label)
-                        else:
-                            print '- failed to create label: ' + version['name'] + '\n    ' + str(ex)
+                    create_label(version['name'], COLOR_VERSION)
             
             if options.verbose:
                 print 'Done importing versions.'
-        
-            return labels
         
         
         import_versions(bitbucket_data['versions'])
@@ -476,8 +447,6 @@ if not options.dry_run:
         #    },
         # ],
         def import_components(components):
-            labels = []
-        
             if options.verbose:
                 print 'Importing '+ `len(components)` +' component(s)...'
         
@@ -486,22 +455,10 @@ if not options.dry_run:
                 count += 1
                 print '- importing #'+ `count`
                 if not options.dry_run:
-                    try:
-                        label = create_label(component['name'], COLOR_VERSION)
-                        labels.append(label)
-                    except GithubException as ex:
-                        label = r.get_label(component['name'])
-                        if label is not None:
-                            print '- label already exists, fetching existing value: '+ str(label)
-                            labels.append(label)
-                        else:
-                            print '- failed to create label: ' + component['name'] + '\n    ' + str(ex)
-                    
+                    create_label(component['name'], COLOR_VERSION)
         
             if options.verbose:
                 print 'Done importing components.'
-        
-            return labels
          
         
         import_components(bitbucket_data['components'])
