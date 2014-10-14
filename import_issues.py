@@ -28,6 +28,7 @@ import getpass
 import datetime
 import pystache
 import os
+import traceback
 
 # parse parameters and show help
 from optparse import OptionParser
@@ -91,14 +92,20 @@ if options.verbose:
 def get_script_path():
     return os.path.dirname(os.path.realpath(__file__))
     
+def unistr(obj, encoding='utf-8'):
+    if isinstance(obj, basestring):
+        if not isinstance(obj, unicode):
+            obj = unicode(obj, encoding)
+    return obj
+
 def load_json(filename):
     if options.verbose:
         print 'Loading data from JSON file: ' + filename
 
-    json_str = open(filename).read()
-    data = json.loads(json_str)
+    ujson = open(filename).read().decode('utf-8')
+    data = json.loads(ujson)
     if options.verbose:
-        print '- loaded ' + `len(json_str)` + ' bytes'
+        print '- loaded ' + `len(ujson)` + ' bytes'
         # pprint(data)
 
     return data
