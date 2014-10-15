@@ -326,7 +326,7 @@ if not options.dry_run:
                 label = github_data['labels'][name]
             else:
                 try:
-                    label = r.get_label(name.encode('utf-8'))
+                    label = r.get_label(name)
                 except:
                     print '- failed to find label: '+ name
                 
@@ -336,19 +336,19 @@ if not options.dry_run:
             label = None
             name = si(name)
             if options.verbose:
-                print '- creating new label "' + name.encode('utf-8') + '"'
+                print '- creating new label "' + name + '"'
             if not options.dry_run:
                 try:
-                    label = r.create_label(name.encode('utf-8'), color)
+                    label = r.create_label(name, color)
                     add_label(label)
                 except GithubException:
                     label = r.get_label(name)
                     if label is not None:
-                        print '- label already exists, fetching existing value: '+ label.name().decode('utf-8')
-                        label = r.get_label(name.encode('utf-8'))
+                        print '- label already exists, fetching existing value: '+ name
+                        label = r.get_label(name)
                         add_label(label) 
                     else:
-                        print '- failed to create label: ' + name.decode('utf-8')
+                        print '- failed to create label: ' + name
                         print traceback.format_exc()
 
             return label
@@ -547,7 +547,7 @@ if not options.dry_run:
             if options.verbose:
                 print 'Loading template file: ' + filename
             
-            return open(filename).read().decode('utf-8')
+            return si(open(filename).read())
         
         def prepare_issue(issue):
             # inject new keys into issue for proper rendering of templae
