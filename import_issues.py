@@ -726,16 +726,16 @@ if not options.dry_run:
                     if comment['issue'] in github_data['issues']:
                         issue = github_data['issues'][comment['issue']]
                         if options.verbose:
-                            print '- creating new comment for issue #'+ comment['issue']
+                            print '- creating new comment for issue #'+ str(comment['issue'])
                         try:
                             out = issue.create_issue_comment(content)
                             output.append(out)
                         except GithubException:
-                            print '- failed to create issue comment #' + comment['id']
+                            print '- failed to create issue comment #' + str(comment['id'])
                             print traceback.format_exc()
                     else:
                         if options.verbose:
-                            print '- failed to import comment because issue #'+ comment['issue'] + ' not found!' 
+                            print '- failed to import comment because issue #'+ str(comment['issue']) + ' not found!' 
         
             print 'Done importing comments.'
         
