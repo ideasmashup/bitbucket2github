@@ -85,18 +85,29 @@ github_repo = None
 github_subtree = None
 
 
-
-if options.verbose:
-    print 'BitBucket to GitHub v0.7'
-
-def get_script_path():
-    return os.path.dirname(os.path.realpath(__file__))
-    
-def unistr(obj, encoding='utf-8'):
+def si(obj, encoding='utf-8'):
     if isinstance(obj, basestring):
         if not isinstance(obj, unicode):
             obj = unicode(obj, encoding)
     return obj
+
+
+def so(obj, encoding='utf-8'):
+    if isinstance(obj, basestring):
+        if not isinstance(obj, unicode):
+            obj = unicode(obj, encoding)
+        else:
+            obj = obj.decode(encoding) 
+    return obj
+
+
+if options.verbose:
+    print 'BitBucket to GitHub v0.7'
+
+
+def get_script_path():
+    return os.path.dirname(os.path.realpath(__file__))
+
 
 def load_json(filename):
     if options.verbose:
