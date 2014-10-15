@@ -113,7 +113,7 @@ def load_json(filename):
     if options.verbose:
         print 'Loading data from JSON file: ' + filename
 
-    ujson = open(filename).read().decode('utf-8')
+    ujson = si(open(filename).read())
     data = json.loads(ujson)
     if options.verbose:
         print '- loaded ' + `len(ujson)` + ' bytes'
@@ -133,23 +133,23 @@ from github import Github
 
 if not options.dry_run:
     if config is not None and config['login']['github']['user'] is not None:
-        github_login = config['login']['github']['user']
+        github_login = si(config['login']['github']['user'])
         if options.verbose:
             print '- fetching login from config file ' + github_login
     elif options.github_login is not None:
-        github_login = options.github_login
+        github_login = si(options.github_login)
         if options.verbose:
             print '- fetching login from script -u parameter value ' + github_login
     else:
-        github_login = raw_input('Please enter your github login: ')
+        github_login = si(raw_input('Please enter your github login: '))
 
     if config is not None and config['login']['github']['pass'] is not None:
-        github_password = config['login']['github']['pass']
+        github_password = si(config['login']['github']['pass'])
         if options.verbose:
             print '- fetching password from config file ' + ('*' * len(github_password))[:len(github_password)]
     else:
         print 'Please enter your github password: '
-        github_password = getpass.getpass()
+        github_password = si(getpass.getpass())
 
     if options.verbose:
         print '- connecting to GitHub using: ' + github_login + ' ' + ('*' * len(github_password))[:len(github_password)]
@@ -158,13 +158,13 @@ if not options.dry_run:
 
     # fetch then loop through all repos entries from the config file
     if config is not None and config.get('repos') is not None:
-        bitbucket_repos = config['repos']
+        bitbucket_repos = si(config['repos'])
     else:
         bitbucket_repos = {}
 
     # global merge repo
     if config is not None and config.get('merge_repo') is not None:
-        github_merge_repo = config['merge_repo']
+        github_merge_repo = si(config['merge_repo'])
         if options.verbose:
             print '- fetching merge repo from config file ' + github_merge_repo
 
@@ -174,14 +174,14 @@ if not options.dry_run:
             print 'Start importing repo ' + bitbucket_repo_name
 
         if bitbucket_repo['merge'] is False:
-            github_repo = bitbucket_repo['name']
+            github_repo = si(bitbucket_repo['name'])
             github_subtree = None
         elif bitbucket_repo['merge'] is True and github_merge_repo is not None:
-            github_repo = github_merge_repo
-            github_subtree = bitbucket_repo['name']
+            github_repo = si(github_merge_repo)
+            github_subtree = si(bitbucket_repo['name'])
         else:
-            github_repo = bitbucket_repo['merge']
-            github_subtree = bitbucket_repo['name']
+            github_repo = si(bitbucket_repo['merge'])
+            github_subtree = si(bitbucket_repo['name'])
 
         if options.verbose:
             if github_subtree is not None:
@@ -191,7 +191,7 @@ if not options.dry_run:
 
         # check if must use org or not
         if config is not None and 'org' in config['login']['github']:
-            github_org = config['login']['github']['org']
+            github_org = si(config['login']['github']['org'])
             if options.verbose:
                 print '- will use organization as repository parent: '+ github_org
             # load organization repo
@@ -242,9 +242,9 @@ if not options.dry_run:
                     count += 1
                     print '- importing #'+ `count` 
                     if options.verbose:
-                        print '- default '+ key +' = '+ value 
+                        print '- default '+ si(key) +' = '+ si(value) 
                     if not options.dry_run:
-                        output[key] = value
+                        output[si(key)] = si(value)
         
             print 'Done importing default values.'
             return output
@@ -287,11 +287,11 @@ if not options.dry_run:
                 count += 1
                 print '- importing #'+ `count`
                 if options.verbose:
-                    print '- creating new "' + milestone['name'] + '" milestone with no description and deadline set to ('+ DEFAULTS['date'].strftime("%Y-%m-%dT%H:%M:%SZ") +')'
+                    print '- creating new "' + si(milestone['name']) + '" milestone with no description and deadline set to ('+ si(DEFAULTS['date'].strftime("%Y-%m-%dT%H:%M:%SZ")) +')'
                 if not options.dry_run:
                     try:
                         out = r.create_milestone(milestone['name'], "open", "", datetime.date.today())
-                        github_milestones[milestone['name']] = out
+                        github_milestones[si(milestone['name'])] = out
                     except GithubException:
                         # FIXME find a way to fetch the existing milestones
                         # m = r.get_milestone(number)
@@ -316,11 +316,12 @@ if not options.dry_run:
         github_data['labels'] = {}
         
         def add_label(label):
-            github_data['labels'][label.name] = label
+            github_data['labels'][si(label.name)] = si(label)
         
         
         def get_label(name):
             label = None
+            name = si(name)
             if name in github_data['labels']:
                 label = github_data['labels'][name]
             else:
@@ -333,6 +334,7 @@ if not options.dry_run:
         
         def create_label(name, color):
             label = None
+            name = si(name)
             if options.verbose:
                 print '- creating new label "' + name.encode('utf-8') + '"'
             if not options.dry_run:
@@ -551,14 +553,14 @@ if not options.dry_run:
             # inject new keys into issue for proper rendering of templae
             if config is not None and 'users' in config and issue['reporter'] in config.get('users'):
                 try:
-                    issue['github_reporter'] = config['users'][issue['reporter']]['github']['user']
-                    issue['github_reporter_full'] = config['users'][issue['reporter']]['github']['fullname']
+                    issue['github_reporter'] = si(config['users'][issue['reporter']]['github']['user'])
+                    issue['github_reporter_full'] = si(config['users'][issue['reporter']]['github']['fullname'])
                 except Exception:
                     print traceback.format_exc()
             else: 
                 # if cannot find convertible user, use current user
                 issue['github_reporter'] = github_login 
-                issue['github_reporter_full'] = '( '+ issue['reporter'] +' )'
+                issue['github_reporter_full'] = '( '+ si(issue['reporter']) +' )'
             return issue
         
         def convert_user(bitbucket_username):
@@ -568,7 +570,7 @@ if not options.dry_run:
             # otherwise use config file 'users' entries
             if config is not None and 'users' in config and bitbucket_username in config.get('users'):
                 try:
-                    github_username = config['users'][bitbucket_username]['github']['user'];
+                    github_username = si(config['users'][bitbucket_username]['github']['user'])
                 except Exception:
                     print traceback.format_exc()
                 if options.verbose:
@@ -623,22 +625,22 @@ if not options.dry_run:
                     print '- creating new issue "' + issue['title'] + '"'
                 if not options.dry_run:
                     if 'title' in issue and issue['title'] is not None:
-                        title = issue['title']
+                        title = si(issue['title'])
                     else:
-                        title = 'Untitled #'+ issue['id']
+                        title = 'Untitled #'+ si(issue['id'])
                     
                     if 'content' in issue and issue['content'] is not None:
-                        content = issue_content(issue)
+                        content = si(issue_content(issue))
                     else:
                         content = ''
                     
                     if 'assignee' in issue and issue['assignee'] is not None:
-                        assignee = convert_user(issue['assignee'])
+                        assignee = si(convert_user(issue['assignee']))
                     else:
                         assignee = None # no assignee
                     
                     if 'milestone' in issue and issue['milestone'] is not None:
-                        milestone = github_data['milestones'][issue['milestone']]
+                        milestone = si(github_data['milestones'][si(issue['milestone'])])
                     else:
                         milestone = None # assign no milestone 
                     
