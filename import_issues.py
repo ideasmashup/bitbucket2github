@@ -201,7 +201,7 @@ if not options.dry_run:
                 print 'Opening GitHub '+ github_org +' repository: ' + r.name
             except GithubException:
                 print 'Github repository '+ github_repo +' can\'t be accessed by '+ github_login +' check permissions and/or initialize the repository with a file, then try again.'
-                print traceback.format_exc()
+#               print traceback.format_exc()
                 exit(-1)
         else:
             # load user repo
