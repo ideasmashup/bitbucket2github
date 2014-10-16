@@ -710,14 +710,14 @@ if not options.dry_run:
             # inject new keys into issue for proper rendering of templae
             if config is not None and 'users' in config and comment['user'] in config.get('users'):
                 try:
-                    comment['github_user'] = config['users'][comment['user']]['github']['user']
-                    comment['github_user_full'] = config['users'][comment['user']]['github']['fullname']
+                    comment['github_user'] = si(config['users'][comment['user']]['github']['user'])
+                    comment['github_user_full'] = si(config['users'][comment['user']]['github']['fullname'])
                 except Exception:
                     print traceback.format_exc()
             else: 
                 # if cannot find convertible user, use current user
                 comment['github_reporter'] = github_login 
-                comment['github_reporter_full'] = '( '+ comment['user'] +' )'
+                comment['github_reporter_full'] = '( '+ si(comment['user']) +' )'
             return comment
         
         def comment_content(comment):
