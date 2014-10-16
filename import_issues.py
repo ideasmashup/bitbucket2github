@@ -620,6 +620,21 @@ if not options.dry_run:
                 if options.verbose:
                     print '- extracting as label: '+ issue['kind'].encode('utf-8')
                 labels.append(get_label(issue['kind']))
+            
+            if bitbucket_repo['merge'] is False:
+                labels.append(get_label(si(github_repo)))
+            elif bitbucket_repo['merge'] is True and github_merge_repo is not None:
+                labels.append(get_label(si(github_merge_repo)))
+                labels.append(get_label(si(bitbucket_repo['name'])))
+            else:
+                labels.append(get_label(si(bitbucket_repo['merge'])))
+                labels.append(get_label(si(bitbucket_repo['name'])))
+    
+            if options.verbose:
+                if github_subtree is not None:
+                    print '- added repo labels ' + github_repo + ' and ' + github_subtree
+                else:
+                    print '- added repo label ' + github_repo
         
             return labels
         
