@@ -199,7 +199,7 @@ if not options.dry_run:
                 r = g.get_organization(github_org).get_repo(github_repo)
                 print 'Opening GitHub '+ github_org +' repository: ' + r.name
             except GithubException:
-                print 'Github repository '+ github_repo +' does not exist yet! create it !'
+                print 'Github repository '+ github_repo +' can\'t be accessed by '+ github_login +' check permissions and/or initialize the repository with a file, then try again.'
                 print traceback.format_exc()
                 exit(-1)
         else:
