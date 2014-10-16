@@ -728,7 +728,7 @@ if not options.dry_run:
                         if options.verbose:
                             print '- creating new comment for issue #'+ str(comment['issue'])
                         try:
-                            out = issue.create_issue_comment(content)
+                            out = issue.create_comment(content)
                             output.append(out)
                         except GithubException:
                             print '- failed to create issue comment #' + str(comment['id'])
