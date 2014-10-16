@@ -6,7 +6,7 @@ basic tools to help migrating from bitbucket to github
 
 ## Requirements
 
-First install the python dependeancies
+First install the python dependencies
 ```
 $ sudo pip install -r requirements.pip
 ```
@@ -15,6 +15,8 @@ You may need to install pip first if you don't have it yet
 ```
 $ sudo apt-get install python-pip
 ```
+
+Before doing anything **you must prepare all target GitHub repositories** otherwise the import will fail horribly and you'll have to clean up and restart all over again. If you've never done this before just follow the [Migration Guide](help/migration_guide.md)
 
 ## Tools
 
@@ -55,4 +57,36 @@ $ import_issues.py -u username -r repository -f db-1.0.json
 
 ### Users
 
-(complete this section)
+As described in the [Migration Guide](help/migration_guide.md) if you don't configure a list of users then you won't have any assignees for your issues and the author names won't link to the corresponding GitHub profile.
+
+Images: (example with users in config) (example without)
+
+Configuring this is pretty simple, just use the format below in this example "bituser" becomes "gituser" (while supercoder doesn't change usernames - you should indicate that too):
+```
+"users" : {
+		"bituser" : {
+			"bitbucket" : {
+				"fullname" : "William WALLACE",
+				"mail" : "william@somecompany.com"
+			}, 
+			"github" : {
+				"fullname" : "W. WALLACE",
+				"user" : "gituser",
+				"mail" : "william@dreamcompany.com"
+			}
+		},
+		"supercoder" : {
+			"bitbucket" : {
+				"fullname" : "Richie KERNIGAN",
+				"mail" : "rkernigan@demigods.cpp"
+			}, 
+			"github" : {
+				"fullname" : "Richie KERNIGAN",
+				"user" : "supercoder",
+				"mail" : "rkernigan@demigods.cpp"
+			}
+		},
+  }
+```
+
+Currently this is only used by the Issues migration script, but in the near future it will also be used to rename all users before importing the git history so that commits also match the github post-migration users infos.
