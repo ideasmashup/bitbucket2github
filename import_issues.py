@@ -284,6 +284,10 @@ if not options.dry_run:
         
             count = 0;
             for milestone in milestones:
+                if 'milestones' in github_data and si(milestone['name']) in  github_data['milestones']:
+                    print '- milestone already exists: '+ si(milestone['name']) +' keeping existing one'
+                    continue
+
                 count += 1
                 print '- importing #'+ `count`
                 if options.verbose:
@@ -335,6 +339,11 @@ if not options.dry_run:
         def create_label(name, color):
             label = None
             name = si(name)
+            
+            if 'labels' in github_data and name in  github_data['labels']:
+                print '- label '+ si(name) + ' already exists, keeping previous one'
+                return github_data['labels'][si(name)]
+                
             if options.verbose:
                 print '- creating new label "' + name + '"'
             if not options.dry_run:
@@ -491,6 +500,10 @@ if not options.dry_run:
             if options.verbose:
                 print 'Importing '+ `len(attachments)` +' attachments(s)...'
         
+#             if 'attachments' in github_data and name in  github_data['attachments']:
+#                 print '- attachment '+ si(name) + ' already exists, keeping previous one'
+#                 return github_data['attachments'][si(name))]
+            
             print 'ERROR: NOT IMPLEMENTED YET... attachments ignored!'
         
             if options.verbose:
