@@ -34,6 +34,7 @@ import traceback
 from optparse import OptionParser
 from pprint import pprint
 from github.GithubException import GithubException
+from types import NoneType
 
 parser = OptionParser()
 
@@ -731,9 +732,12 @@ if not options.dry_run:
             count = 0
             for comment in comments:
                 count += 1
-                print '- importing #'+ `count`
+                print '- importing #'+ str(comment['id'])
                 if options.verbose:
-                    print '- creating new comment "' + comment['content'] + '"'
+                    if comment['content'] is not None and isinstance(comment['content'], NoneType): 
+                        print '- creating new comment "' + si(comment['content']) + '"'
+                    else:
+                        print '- creating empty comment because it is either null or None...'
                 if not options.dry_run:
                     content = comment_content(comment)
                     if comment['issue'] in github_data['issues']:
