@@ -792,10 +792,11 @@ if not options.dry_run:
         logs = bitbucket_data['logs']
         print 'Start importing '+ `len(logs)` +' log(s)...'
         
-        
-        for log in logs:
-            if options.verbose:
-                print '- creating new log "' + log['content'] + '"'
+        # FIXME maybe import as "changelog" .md files in source or wiki?
+        print '- logs import not implemented' 
+#         for log in logs:
+#             if options.verbose:
+#                 print '- creating new log "' + log['content'] + '"'
         #     if not options.dry_run:
         #         r.create_issue(title, comment['content'], assignee, milestone, labels)
         
