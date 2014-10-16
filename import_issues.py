@@ -731,28 +731,30 @@ if not options.dry_run:
         
             count = 0
             for comment in comments:
-                count += 1
-                print '- importing #'+ str(comment['id'])
-                if options.verbose:
-                    if comment['content'] is not None and isinstance(comment['content'], NoneType): 
+                # skip all null content comments (usually just minor fields updates so not useful)
+                if comment['content'] is None or type(comment['content']) is NoneType:
+                    print '- skipping comment because it is either null or None...'
+                    continue
+                else:
+                    count += 1
+                    print '- importing #'+ str(comment['id'])
+                    if options.verbose:
                         print '- creating new comment "' + si(comment['content']) + '"'
-                    else:
-                        print '- creating empty comment because it is either null or None...'
-                if not options.dry_run:
-                    content = comment_content(comment)
-                    if comment['issue'] in github_data['issues']:
-                        issue = github_data['issues'][comment['issue']]
-                        if options.verbose:
-                            print '- creating new comment for issue #'+ str(comment['issue'])
-                        try:
-                            out = issue.create_comment(content)
-                            output.append(out)
-                        except GithubException:
-                            print '- failed to create issue comment #' + str(comment['id'])
-                            print traceback.format_exc()
-                    else:
-                        if options.verbose:
-                            print '- failed to import comment because issue #'+ str(comment['issue']) + ' not found!' 
+                    if not options.dry_run:
+                        content = comment_content(comment)
+                        if comment['issue'] in github_data['issues']:
+                            issue = github_data['issues'][comment['issue']]
+                            if options.verbose:
+                                print '- creating new comment for issue #'+ str(comment['issue'])
+                            try:
+                                out = issue.create_comment(si(content))
+                                output.append(out)
+                            except GithubException:
+                                print '- failed to create issue comment #' + str(comment['id'])
+                                print traceback.format_exc()
+                        else:
+                            if options.verbose:
+                                print '- failed to import comment because issue #'+ str(comment['issue']) + ' not found!' 
         
             print 'Done importing comments.'
         
