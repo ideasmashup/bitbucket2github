@@ -32,7 +32,6 @@ import traceback
 
 # parse parameters and show help
 from optparse import OptionParser
-from pprint import pprint
 from github.GithubException import GithubException
 from types import NoneType
 
