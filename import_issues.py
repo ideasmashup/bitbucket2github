@@ -571,9 +571,13 @@ if not options.dry_run:
                 filename = filename + ext # template without extension
 
             if options.verbose:
-                print 'Loading template file: ' + filename
+                print 'Loading template file: ' + HEADER + filename + ENDC
             
-            return si(open(filename).read())
+            try:
+                return si(open(filename).read())
+            except Exception:
+                print FAIL + traceback.format_exc() + ENDC
+                exit(-1)
         
         def prepare_issue(issue):
             # inject new keys into issue for proper rendering of templae
