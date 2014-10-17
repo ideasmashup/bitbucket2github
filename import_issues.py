@@ -101,9 +101,18 @@ def so(obj, encoding='utf-8'):
             obj = obj.decode(encoding) 
     return obj
 
+# colors and text styles
+
+HEADER = '\033[95m'
+STRONG = '\033[94m'
+EM = '\033[92m'
+WARNING = '\033[93m'
+FAIL = '\033[91m'
+ENDC = '\033[0m'
+BOLD = "\033[1m"
 
 if options.verbose:
-    print 'BitBucket to GitHub v0.7'
+    print BOLD + HEADER + 'BitBucket to GitHub v0.7' + ENDC
 
 
 def get_script_path():
