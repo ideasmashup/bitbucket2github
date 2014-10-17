@@ -121,7 +121,7 @@ def get_script_path():
 
 def load_json(filename):
     if options.verbose:
-        print 'Loading data from JSON file: ' + filename
+        print 'Loading data from JSON file: ' + HEADER + filename + ENDC
 
     ujson = si(open(filename).read())
     data = json.loads(ujson)
@@ -145,24 +145,24 @@ if not options.dry_run:
     if config is not None and config['login']['github']['user'] is not None:
         github_login = si(config['login']['github']['user'])
         if options.verbose:
-            print '- fetching login from config file ' + github_login
+            print '- fetching login from config file ' + HEADER + github_login + ENDC
     elif options.github_login is not None:
         github_login = si(options.github_login)
         if options.verbose:
-            print '- fetching login from script -u parameter value ' + github_login
+            print '- fetching login from script -u parameter value ' + HEADER + github_login + ENDC
     else:
         github_login = si(raw_input('Please enter your github login: '))
 
     if config is not None and config['login']['github']['pass'] is not None:
         github_password = si(config['login']['github']['pass'])
         if options.verbose:
-            print '- fetching password from config file ' + ('*' * len(github_password))[:len(github_password)]
+            print '- fetching password from config file ' + HEADER + ('*' * len(github_password))[:len(github_password)] + ENDC
     else:
-        print 'Please enter your github password: '
+        print STRONG + 'Please enter your github password: ' + ENDC
         github_password = si(getpass.getpass())
 
     if options.verbose:
-        print '- connecting to GitHub using: ' + github_login + ' ' + ('*' * len(github_password))[:len(github_password)]
+        print '- connecting to GitHub using: ' + HEADER + github_login + ' ' + ('*' * len(github_password))[:len(github_password)] + ENDC
 
     g = Github(github_login, github_password)
 
@@ -176,12 +176,12 @@ if not options.dry_run:
     if config is not None and config.get('merge_repo') is not None:
         github_merge_repo = si(config['merge_repo'])
         if options.verbose:
-            print '- fetching merge repo from config file ' + github_merge_repo
+            print '- fetching merge repo from config file ' + HEADER + github_merge_repo + ENDC
 
 
     for bitbucket_repo_name, bitbucket_repo in bitbucket_repos.iteritems():
         if options.verbose:
-            print 'Start importing repo ' + bitbucket_repo_name
+            print 'Start importing repo ' + HEADER + bitbucket_repo_name + ENDC
 
         if bitbucket_repo['merge'] is False:
             github_repo = si(bitbucket_repo['name'])
@@ -195,31 +195,31 @@ if not options.dry_run:
 
         if options.verbose:
             if github_subtree is not None:
-                print '- imported as ' + github_repo + '(/' + github_subtree + ')'
+                print '- imported as ' + HEADER + BOLD + github_repo + ENDC + ' ' +  HEADER + github_subtree + ENDC
             else:
-                print '- imported as ' + github_repo
+                print '- imported as ' + HEADER + BOLD + github_repo + ENDC
 
         # check if must use org or not
         if config is not None and 'org' in config['login']['github']:
             github_org = si(config['login']['github']['org'])
             if options.verbose:
-                print '- will use organization as repository parent: '+ github_org
+                print '- will use organization as repository parent: '+ HEADER + github_org + ENDC
             # load organization repo
             try:
                 r = g.get_organization(github_org).get_repo(github_repo)
-                print 'Opening GitHub '+ github_org +' repository: ' + r.name
+                print 'Opening GitHub '+ github_org +' repository: ' + HEADER + r.name + ENDC
             except GithubException:
                 print 'Github repository '+ github_repo +' can\'t be accessed by '+ github_login +' check permissions and/or initialize the repository with a file, then try again.'
-#               print traceback.format_exc()
+                print FAIL + traceback.format_exc() + ENDC
                 exit(-1)
         else:
             # load user repo
             try:
                 r = g.get_user().get_repo(github_repo)
-                print 'Opening  '+ github_login +' GitHub repository: ' + r.name
+                print 'Opening  '+ github_login +' GitHub repository: ' + HEADER + r.name + ENDC
             except GithubException:
                 print 'Github repository '+ github_repo +' does not exist yet! create it !'
-                print traceback.format_exc()
+                print FAIL + traceback.format_exc() + ENDC
                 exit(-1)
 
         # load issues json file
@@ -310,8 +310,8 @@ if not options.dry_run:
                         # FIXME find a way to fetch the existing milestones
                         # m = r.get_milestone(number)
                         # github_milestones[milestone['name']]
-                        print '- failed to create milestone: '
-                        print traceback.format_exc()
+                        print FAIL + '- failed to create milestone: ' + ENDC
+                        print FAIL + traceback.format_exc() + ENDC
             print 'Done importing milestones.'
             return github_milestones
         
@@ -342,7 +342,7 @@ if not options.dry_run:
                 try:
                     label = r.get_label(name)
                 except:
-                    print '- failed to find label: '+ name
+                    print FAIL + '- failed to find label: '+ name + ENDC
                 
             return label
         
@@ -363,12 +363,12 @@ if not options.dry_run:
                 except GithubException:
                     label = r.get_label(name)
                     if label is not None:
-                        print '- label already exists, fetching existing value: '+ name
+                        print WARNING + '- label already exists, fetching existing value: '+ name + ENDC
                         label = r.get_label(name)
                         add_label(label) 
                     else:
-                        print '- failed to create label: ' + name
-                        print traceback.format_exc()
+                        print FAIL + '- failed to create label: ' + name + ENDC
+                        print FAIL + traceback.format_exc() + ENDC
 
             return label
         # -------------------------------------------------------------
@@ -579,7 +579,7 @@ if not options.dry_run:
                     issue['github_reporter'] = si(config['users'][issue['reporter']]['github']['user'])
                     issue['github_reporter_full'] = si(config['users'][issue['reporter']]['github']['fullname'])
                 except Exception:
-                    print traceback.format_exc()
+                    print FAIL + traceback.format_exc() + ENDC
             else: 
                 # if cannot find convertible user, use current user
                 issue['github_reporter'] = github_login 
@@ -595,7 +595,7 @@ if not options.dry_run:
                 try:
                     github_username = si(config['users'][bitbucket_username]['github']['user'])
                 except Exception:
-                    print traceback.format_exc()
+                    print FAIL + traceback.format_exc() + ENDC
                 if options.verbose:
                     print 'converted '+ bitbucket_username +' as '+ github_username 
             return github_username
@@ -695,8 +695,8 @@ if not options.dry_run:
                         
                         output[issue['id']] = out
                     except GithubException:
-                        print '- failed to create issue #' + issue['id']
-                        print traceback.format_exc()
+                        print FAIL + '- failed to create issue #' + issue['id'] + ENDC
+                        print FAIL + traceback.format_exc() + ENDC
         
             print 'Done importing issues.'
         
@@ -737,7 +737,7 @@ if not options.dry_run:
                     comment['github_user'] = si(config['users'][comment['user']]['github']['user'])
                     comment['github_user_full'] = si(config['users'][comment['user']]['github']['fullname'])
                 except Exception:
-                    print traceback.format_exc()
+                    print FAIL + traceback.format_exc() + ENDC
             else: 
                 # if cannot find convertible user, use current user
                 comment['github_reporter'] = github_login 
@@ -774,8 +774,8 @@ if not options.dry_run:
                                 out = issue.create_comment(si(content))
                                 output.append(out)
                             except GithubException:
-                                print '- failed to create issue comment #' + str(comment['id'])
-                                print traceback.format_exc()
+                                print FAIL + '- failed to create issue comment #' + str(comment['id']) + ENDC
+                                print FAIL + traceback.format_exc() + ENDC
                         else:
                             if options.verbose:
                                 print '- failed to import comment because issue #'+ str(comment['issue']) + ' not found!' 
