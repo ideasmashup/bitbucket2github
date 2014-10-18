@@ -227,7 +227,17 @@ if not options.dry_run:
 
         # load issues json file
         # -------------------------------------------------------------
-        bitbucket_data = load_json(options.json_file)
+        if config is not None and 'issues' in bitbucket_repo and type(bitbucket_repo['issues']) is not NoneType:
+            if type(bitbucket_repo['issues']) is bool:
+                # FIXME implement online import by connecting to bitbucket's REST API to solve this 
+                print WARNING + 'You must indicate a JSON file from where to import the issues data. Genereate this file from the Bitbucket repo settings page.' + ENDC
+                print FAIL + 'Skipping import of this Repository issues.' + ENDC
+                continue
+            else:
+                # load issues from JSON file specified in repository config file etry
+                bitbucket_data = load_json(bitbucket_repo['issues'])
+        else:
+            bitbucket_data = load_json(options.json_file)
         # -------------------------------------------------------------
         
         
