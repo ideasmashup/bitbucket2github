@@ -137,7 +137,7 @@ def load_json(filename):
 
 # load config file
 if options.config_file is not None:
-    config = load_json(str(options.config_file))
+    config = load_json(options.config_file)
 
 # connect to GitHub API v3 
 # see: https://github.com/jacquev6/PyGithub
