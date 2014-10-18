@@ -52,7 +52,7 @@ parser.add_option("-c", "--conf", dest="config_file", default=None,
 parser.add_option("-r", "--repository", dest="repository",
     help="GitHub repository where to import the issues.")
 
-parser.add_option("-f", "--file", dest="json_file", default="db-1.0.json",
+parser.add_option("-f", "--file", dest="json_file", default=None,
     help="Source JSON file containing the issues to import.")
 
 (options, args) = parser.parse_args()
