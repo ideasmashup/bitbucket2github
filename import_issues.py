@@ -119,18 +119,21 @@ def get_script_path():
 
 
 def load_json(filename):
-    if options.verbose:
-        print 'Loading data from JSON file: ' + HEADER + filename + ENDC
-
-    try:
-        ujson = si(open(filename).read())
-        data = json.loads(ujson)
+    data = None
+    
+    if type(filename) is not NoneType:
         if options.verbose:
-            print '- loaded ' + `len(ujson)` + ' bytes'
-            # pprint(data)
-    except Exception:
-        print FAIL + traceback.format_exc() + ENDC
-        exit(-1)
+            print 'Loading data from JSON file: ' + HEADER + filename + ENDC
+    
+        try:
+            ujson = si(open(filename).read())
+            data = json.loads(ujson)
+            if options.verbose:
+                print '- loaded ' + `len(ujson)` + ' bytes'
+                # pprint(data)
+        except Exception:
+            print FAIL + traceback.format_exc() + ENDC
+            exit(-1)
 
     return data
 
