@@ -276,7 +276,7 @@ if not options.dry_run:
             return output
         
         # defaults from meta fields
-        github_data['metas'] = import_metas(bitbucket_data['meta'])
+        github_data[github_repo]['metas'] = import_metas(bitbucket_data['meta'])
         
         if options.verbose:
             print 'Setting default date to: ' + DEFAULTS['date'].strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -332,28 +332,28 @@ if not options.dry_run:
             return github_milestones
         
         
-        github_data['milestones'] = import_milestones(bitbucket_data['milestones'])
+        github_data[github_repo]['milestones'] = import_milestones(bitbucket_data['milestones'])
         
         if options.verbose:
             print 'Imported milestones :'
-            for mobj in github_data['milestones']:
+            for mobj in github_data[github_repo]['milestones']:
                 print '- '+ mobj.title()
         # -------------------------------------------------------------
         
         
         
         # -------------------------------------------------------------
-        github_data['labels'] = {}
+        github_data[github_repo]['labels'] = {}
         
         def add_label(label):
-            github_data['labels'][si(label.name)] = si(label)
+            github_data[github_repo]['labels'][si(label.name)] = si(label)
         
         
         def get_label(name):
             label = None
             name = si(name)
-            if name in github_data['labels']:
-                label = github_data['labels'][name]
+            if name in github_data[github_repo]['labels']:
+                label = github_data[github_repo]['labels'][name]
             else:
                 try:
                     label = r.get_label(name)
@@ -366,12 +366,12 @@ if not options.dry_run:
             label = None
             name = si(name)
             
-            if 'labels' in github_data and name in  github_data['labels']:
-                print '- label '+ si(name) + ' already exists, keeping previous one'
-                return github_data['labels'][si(name)]
+            if 'labels' in github_data[github_repo] and name in  github_data[github_repo]['labels']:
+                print '- label '+ HEADER + si(name) + ENDC + ' already exists, keeping previous one'
+                return github_data[github_repo]['labels'][si(name)]
                 
             if options.verbose:
-                print '- creating new label "' + name + '"'
+                print '- creating new label "' + HEADER + name + ENDC + '"'
             if not options.dry_run:
                 try:
                     label = r.create_label(name, color)
@@ -526,9 +526,9 @@ if not options.dry_run:
             if options.verbose:
                 print 'Importing '+ `len(attachments)` +' attachments(s)...'
         
-#             if 'attachments' in github_data and name in  github_data['attachments']:
+#             if 'attachments' in github_data[github_repo] and name in  github_data[github_repo]['attachments']:
 #                 print '- attachment '+ si(name) + ' already exists, keeping previous one'
-#                 return github_data['attachments'][si(name))]
+#                 return github_data[github_repo]['attachments'][si(name))]
             
             print 'ERROR: NOT IMPLEMENTED YET... attachments ignored!'
         
@@ -538,7 +538,7 @@ if not options.dry_run:
             return attachs
         
         
-        github_data['attachments'] = import_attachments(bitbucket_data['attachments'])
+        github_data[github_repo]['attachments'] = import_attachments(bitbucket_data['attachments'])
         # -------------------------------------------------------------
         
         
@@ -698,7 +698,7 @@ if not options.dry_run:
                         assignee = None # no assignee
                     
                     if 'milestone' in issue and issue['milestone'] is not None:
-                        milestone = si(github_data['milestones'][si(issue['milestone'])])
+                        milestone = si(github_data[github_repo]['milestones'][si(issue['milestone'])])
                     else:
                         milestone = None # assign no milestone 
                     
@@ -723,7 +723,7 @@ if not options.dry_run:
             return output
         
         
-        github_data['issues'] = import_issues(bitbucket_data['issues'])
+        github_data[github_repo]['issues'] = import_issues(bitbucket_data['issues'])
         # -------------------------------------------------------------
         
         
@@ -786,8 +786,8 @@ if not options.dry_run:
                         print '- creating new comment "' + si(comment['content']) + '"'
                     if not options.dry_run:
                         content = comment_content(comment)
-                        if comment['issue'] in github_data['issues']:
-                            issue = github_data['issues'][comment['issue']]
+                        if comment['issue'] in github_data[github_repo]['issues']:
+                            issue = github_data[github_repo]['issues'][comment['issue']]
                             if options.verbose:
                                 print '- creating new comment for issue #'+ str(comment['issue'])
                             try:
@@ -805,7 +805,7 @@ if not options.dry_run:
             return output
         
         
-        github_data['comments'] = import_comments(bitbucket_data['comments'])
+        github_data[github_repo]['comments'] = import_comments(bitbucket_data['comments'])
         # -------------------------------------------------------------
         
         
