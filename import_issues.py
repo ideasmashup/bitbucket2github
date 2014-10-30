@@ -243,7 +243,26 @@ if not options.dry_run:
             bitbucket_data = load_json(options.json_file)
         # -------------------------------------------------------------
         
+        # make github imported data dict
+        if github_data is None:
+            github_data = {
+                # inject empty dict sections later
+            }
+            
         
+        if github_repo not in github_data:
+            github_data[github_repo] = {
+                    'metas' : {},
+                    'milestones' : {},
+                    'kinds' : {},
+                    'priorities' : {},
+                    'versions' : {},
+                    'components' : {},
+                    'attachments' : {},
+                    'issues' : {},
+                    'users' : {},
+                    'comments' : {},
+                }
         
         # fetch default values
         # -------------------------------------------------------------
