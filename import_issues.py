@@ -734,7 +734,7 @@ if not options.dry_run:
                         
                         output[issue['id']] = out
                     except GithubException:
-                        print FAIL + '- failed to create issue #' + issue['id'] + ENDC
+                        print FAIL + '- failed to create issue #' + str(issue['id']) + ENDC
                         print FAIL + traceback.format_exc() + ENDC
         
             print 'Done importing issues.'
