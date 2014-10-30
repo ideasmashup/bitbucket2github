@@ -276,26 +276,29 @@ if not options.dry_run:
         # },
         
         def import_metas(metas):
-            output = {}
-        
             if options.verbose:
                 print 'Importing '+ `len(metas)` +' default value(s)...'
         
             count = 0
             for key, value in metas.items():
-                if key is not None and value is not None:
+                if key is not None and si(key) in github_data[github_repo]['metas']:
+                    # check if already imported
+                    print '- already imported: '+ si(value)
+                    continue
+                
+                elif key is not None and value is not None:
+                    # import for the first time
                     count += 1
-                    print '- importing #'+ `count` 
+                    print '- importing default #'+ `count` 
                     if options.verbose:
                         print '- default '+ si(key) +' = '+ si(value) 
                     if not options.dry_run:
-                        output[si(key)] = si(value)
+                        github_data[github_repo]['metas'][si(key)] = si(value)
         
             print 'Done importing default values.'
-            return output
         
         # defaults from meta fields
-        github_data[github_repo]['metas'] = import_metas(bitbucket_data['meta'])
+        import_metas(bitbucket_data['meta'])
         
         if options.verbose:
             print 'Setting default date to: ' + DEFAULTS['date'].strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -322,17 +325,15 @@ if not options.dry_run:
         # ],
         
         def import_milestones(milestones):
-            github_milestones = {}
-            
             if options.verbose:
                 print 'Importing '+ `len(milestones)` +' milestone(s)...'
         
             count = 0;
             for milestone in milestones:
-                if 'milestones' in github_data and si(milestone['name']) in  github_data['milestones']:
+                if si(milestone['name']) in  github_data[github_repo]['milestones']:
                     print '- milestone already exists: '+ si(milestone['name']) +' keeping existing one'
                     continue
-
+            
                 count += 1
                 print '- importing #'+ `count`
                 if options.verbose:
@@ -340,7 +341,7 @@ if not options.dry_run:
                 if not options.dry_run:
                     try:
                         out = r.create_milestone(milestone['name'], "open", "", datetime.date.today())
-                        github_milestones[si(milestone['name'])] = out
+                        github_data[github_repo]['milestones'][si(milestone['name'])] = out
                     except GithubException:
                         # FIXME find a way to fetch the existing milestones
                         # m = r.get_milestone(number)
@@ -348,10 +349,9 @@ if not options.dry_run:
                         print FAIL + '- failed to create milestone: ' + ENDC
                         print FAIL + traceback.format_exc() + ENDC
             print 'Done importing milestones.'
-            return github_milestones
-        
-        
-        github_data[github_repo]['milestones'] = import_milestones(bitbucket_data['milestones'])
+
+
+        import_milestones(bitbucket_data['milestones'])
         
         if options.verbose:
             print 'Imported milestones :'
@@ -385,7 +385,7 @@ if not options.dry_run:
             label = None
             name = si(name)
             
-            if 'labels' in github_data[github_repo] and name in  github_data[github_repo]['labels']:
+            if name in github_data[github_repo]['labels']:
                 print '- label '+ HEADER + si(name) + ENDC + ' already exists, keeping previous one'
                 return github_data[github_repo]['labels'][si(name)]
                 
