@@ -18,6 +18,29 @@ $ sudo apt-get install python-pip
 
 Before doing anything **you must prepare all target GitHub repositories** otherwise the import will fail horribly and you'll have to clean up and restart all over again. If you've never done this before just follow the [Migration Guide](help/migration_guide.md)
 
+### Github setup
+
+If you want migrated issues to be assigned properly to actual users you will need to first ask every bitbucket user to create his or her own github account.
+After that, you must create at least one target github repository (the migration sript cannot create new repositories), initialized with a readme file.
+
+When it's done complete the config file accordingly, with entries for each user. Unavailable users will be converted to the "importer" user, that's why
+it's better practice to import using a "bot" or "neutral" account. Also make sure that all users have access to the target repository and if the repo is
+within an organization, make sure to set the org :
+
+```json
+	"login" : {
+		"github" : {
+			"user" : "neutral-user",
+			"pass" : "xxx",
+			"org"  : "organization-name"
+		}
+	},
+```
+
+### Esxecution
+
+(complete this section) 
+
 ## Tools
 
 ### Source
